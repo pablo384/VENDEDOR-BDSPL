@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "925918335607",
+    "firebase_url": "https://bdspl-97222.firebaseio.com",
+    "project_id": "bdspl-97222",
+    "storage_bucket": "bdspl-97222.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925918335607:android:36cebd5a901cc5d9da6c72",
+        "android_client_info": {
+          "package_name": "com.ejemplo.vendedor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925918335607-6iucm1meqlm9cljqd2eq539841i9ku02.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1QNnmcfLiw7u-RsupodIRZS3i_NzxLko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925918335607-6iucm1meqlm9cljqd2eq539841i9ku02.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
