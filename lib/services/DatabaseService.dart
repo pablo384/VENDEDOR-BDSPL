@@ -4,12 +4,12 @@ import '../index.dart';
 
 class DatabaseService {
   static FirebaseDatabase database = FirebaseDatabase.instance;
+  static Stream<Event> getProducts() {
+    return database.reference().child("productos").onValue;
+  }
+
   static Stream<Event> getTodayRouteVisit() {
-    return database
-        .reference()
-        .child("clientes")
-        .endAt("4", key: 'SEMANA')
-        .onValue;
+    return database.reference().child("clientes").onValue;
   }
 
   static login(ConfigDataModel config, String passowrd) async {
