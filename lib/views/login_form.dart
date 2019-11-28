@@ -7,7 +7,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController();
+  // final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _loading = false;
 
@@ -47,23 +47,23 @@ class _LoginFormState extends State<LoginForm> {
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 6.0),
-            child: TextFormField(
-              key: Key('login_terminal'),
-              keyboardType: TextInputType.emailAddress,
-              // controller: consor,
-              decoration: InputDecoration(
-                labelText: 'Usuario',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(FontAwesomeIcons.userCircle),
-              ),
-              controller: _usernameController,
-              enabled: !_loading,
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.only(bottom: 6.0),
+          //   child: TextFormField(
+          //     key: Key('login_terminal'),
+          //     keyboardType: TextInputType.emailAddress,
+          //     // controller: consor,
+          //     decoration: InputDecoration(
+          //       labelText: 'Usuario',
+          //       border: OutlineInputBorder(),
+          //       prefixIcon: Icon(FontAwesomeIcons.userCircle),
+          //     ),
+          //     controller: _usernameController,
+          //     enabled: !_loading,
+          //   ),
+          // ),
           TextFormField(
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'Contraseña',
               border: OutlineInputBorder(),

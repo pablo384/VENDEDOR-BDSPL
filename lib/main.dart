@@ -2,18 +2,20 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:vendedor/services/DatabaseService.dart';
 import 'package:vendedor/views/Login.dart';
 
 void main() => runApp(MyApp());
-FirebaseDatabase database;
+// FirebaseDatabase database;
 
 class MyApp extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    database = FirebaseDatabase.instance;
-    database.setPersistenceEnabled(true);
+    DatabaseService.openDatabase();
+    // database = FirebaseDatabase.instance;
+    // database.setPersistenceEnabled(true);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -53,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     database = FirebaseDatabase.instance;
-    database.setPersistenceEnabled(true);
+    // database.setPersistenceEnabled(true);
     // database.setPersistenceCacheSizeBytes(10000000);
   }
 

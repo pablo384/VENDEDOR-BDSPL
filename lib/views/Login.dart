@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vendedor/views/ConfigPage.dart';
 
+import '../Global.dart';
 import 'login_form.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onLongPress: () {
                         // _configBluetooth(context);
+                        View.goTo(context, ConfigPage());
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 20.0),
