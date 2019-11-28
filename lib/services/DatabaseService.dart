@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:vendedor/models/index.dart';
+
+import '../index.dart';
 
 class DatabaseService {
   static FirebaseDatabase database = FirebaseDatabase.instance;

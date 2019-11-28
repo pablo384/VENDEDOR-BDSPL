@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:vendedor/components/MenuDrawer.dart';
-import 'package:vendedor/models/index.dart';
 import 'package:vendedor/services/DatabaseService.dart';
+
+import '../index.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);

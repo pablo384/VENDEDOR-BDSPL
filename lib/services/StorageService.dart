@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vendedor/models/index.dart';
+
+import '../index.dart';
 
 class StorageService {
   static final keyConfig = "config-key";

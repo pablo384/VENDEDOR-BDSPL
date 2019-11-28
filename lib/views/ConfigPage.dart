@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:vendedor/models/index.dart';
 import 'package:vendedor/services/DatabaseService.dart';
 import 'package:vendedor/services/StorageService.dart';
+
+import '../index.dart';
 
 class ConfigPage extends StatefulWidget {
   ConfigPage({Key key}) : super(key: key);
