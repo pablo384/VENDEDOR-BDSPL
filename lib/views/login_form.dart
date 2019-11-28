@@ -23,10 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Future _authVerification() async {
-    // var auth = await HttpClientAPI.isAuthenticated();
-    // if (auth) {
-    //   View.goTo(context, Home());
-    // }
+    if (await StorageService.isLogged()) View.goToReplacement(context, Home());
   }
 
   @override
@@ -112,6 +109,7 @@ class _LoginFormState extends State<LoginForm> {
     var res = await DatabaseService.login(conf, _passwordController.text);
     print("respuesta login $res");
     if (res) {
+      StorageService.setLogged(true);
       View.goToReplacement(context, Home());
     }
     setState(() {
