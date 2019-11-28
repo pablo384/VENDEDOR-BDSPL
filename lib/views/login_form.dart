@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vendedor/services/DatabaseService.dart';
+import 'package:vendedor/services/StorageService.dart';
+import 'package:vendedor/views/Home.dart';
+
+import '../Global.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -29,19 +34,19 @@ class _LoginFormState extends State<LoginForm> {
     // _authModel = Provider.of<AuthModel>(context);
     // _usernameController.text = 'admin';
     // _passwordController.text = '12345678';
-    // if (snackMsgObserver.value != null) {
-    //   _onWidgetDidBuild(() {
-    //     Scaffold.of(context).showSnackBar(
-    //       SnackBar(
-    //         content: Text(
-    //           snackMsgObserver.value.msg,
-    //         ),
-    //         backgroundColor: snackMsgObserver.value.color,
-    //       ),
-    //     );
-    //     snackMsgObserver.add(null);
-    //   });
-    // }
+    if (snackMsgObserver.value != null) {
+      _onWidgetDidBuild(() {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              snackMsgObserver.value.msg,
+            ),
+            backgroundColor: snackMsgObserver.value.color,
+          ),
+        );
+        snackMsgObserver.add(null);
+      });
+    }
     return Form(
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -88,9 +93,6 @@ class _LoginFormState extends State<LoginForm> {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                 ),
-          // Container(
-          //   child: null,
-          // ),
         ],
       ),
     );
@@ -106,16 +108,12 @@ class _LoginFormState extends State<LoginForm> {
     setState(() {
       _loading = true;
     });
-    // try {
-    //   await HttpClientAPI.login(ParamsLogin(
-    //     email: _usernameController.text,
-    //     password: _passwordController.text,
-    //   ));
-    //   SnackbarMsg.successMsg("Login correcto");
-    //   await _authVerification();
-    // } catch (e) {
-    //   SnackbarMsg.errorMsg(e.toString());
-    // }
+    var conf = await StorageService.getConfig();
+    var res = await DatabaseService.login(conf, _passwordController.text);
+    print("respuesta login $res");
+    if (res) {
+      View.goToReplacement(context, Home());
+    }
     setState(() {
       _loading = false;
     });

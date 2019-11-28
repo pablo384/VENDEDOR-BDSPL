@@ -11,12 +11,21 @@ class DatabaseService {
   static saveConfig(ConfigDataModel config) async {
     var result = await database
         .reference()
-        .child("ruta_${config.ruta}")
+        .child("rutas/${config.ruta}")
         .reference()
         .runTransaction((MutableData mutableData) async {
       mutableData.value = config.toJson();
       return mutableData;
     });
-    return result;
+    return result.committed;
+  }
+
+  static login(ConfigDataModel config, String passowrd) async {
+    DataSnapshot result =
+        await database.reference().child("rutas/${config.ruta}").once();
+    print("resultado ${result.value}");
+
+    var indb = ConfigDataModel.fromJson(Map.castFrom(result.value));
+    return indb.password == passowrd;
   }
 }

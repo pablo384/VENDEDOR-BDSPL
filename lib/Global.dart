@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'models/UtilModels.dart';
 
 BehaviorSubject<Map<String, dynamic>> infoLoginObserver =
     new BehaviorSubject<Map<String, dynamic>>();
@@ -46,6 +43,13 @@ class View {
 
   static goTo(BuildContext context, Widget page) {
     Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
+  }
+
+  static goToReplacement(BuildContext context, Widget page) {
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => page),
     );

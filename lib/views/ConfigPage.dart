@@ -1,11 +1,8 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vendedor/models/index.dart';
 import 'package:vendedor/services/DatabaseService.dart';
 import 'package:vendedor/services/StorageService.dart';
-
-import '../main.dart';
 
 class ConfigPage extends StatefulWidget {
   ConfigPage({Key key}) : super(key: key);
@@ -19,12 +16,6 @@ class _ConfigPageState extends State<ConfigPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   // final database = FirebaseDatabase.instance;
-  @override
-  void initState() {
-    super.initState();
-    // database.setPersistenceEnabled(true);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +78,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                 ruta: _rutaController.text,
                               );
                               if (await DatabaseService.saveConfig(config)) {
+                                await StorageService.saveConfig(config);
                                 print("todo OK");
                               } else {
                                 print("todo Mal");
@@ -114,5 +106,11 @@ class _ConfigPageState extends State<ConfigPage> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // database.setPersistenceEnabled(true);
   }
 }
