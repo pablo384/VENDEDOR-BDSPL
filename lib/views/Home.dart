@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:vendedor/components/MenuDrawer.dart';
 import 'package:vendedor/models/index.dart';
 import 'package:vendedor/services/DatabaseService.dart';
 
@@ -16,47 +15,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   StreamSubscription _subs;
   List<ClientDataModel> items = [];
-
-  startListen() {
-    _subs = DatabaseService.getTodayRouteVisit().listen((data) {
-      var semana = 0;
-      if (DateTime.now().day > 0) semana = 1;
-      if (DateTime.now().day > 7) semana = 2;
-      if (DateTime.now().day > 14) semana = 3;
-      if (DateTime.now().day > 23) semana = 4;
-      List<ClientDataModel> response = [];
-      // semana = 1;
-      var res = Map.castFrom(data.snapshot.value);
-      print("lisener 02 ${res.toString()}");
-      for (var key in res.keys) {
-        // print("semana ${res[key]['SEMANA']}");
-        if (res[key]['SEMANA'] == semana.toString()) {
-          response.add(ClientDataModel.fromJson({...res[key], "id": key}));
-        }
-      }
-
-      // print("lisener 03 ${jsonEncode(response)}");
-      setState(() {
-        items = response;
-      });
-    });
-  }
-
-  disableListen() {
-    _subs.cancel();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    startListen();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    disableListen();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +46,48 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+      drawer: MenuDrawer(),
     );
+  }
+
+  disableListen() {
+    _subs.cancel();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    disableListen();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startListen();
+  }
+
+  startListen() {
+    _subs = DatabaseService.getTodayRouteVisit().listen((data) {
+      var semana = 0;
+      if (DateTime.now().day > 0) semana = 1;
+      if (DateTime.now().day > 7) semana = 2;
+      if (DateTime.now().day > 14) semana = 3;
+      if (DateTime.now().day > 23) semana = 4;
+      List<ClientDataModel> response = [];
+      // semana = 1;
+      var res = Map.castFrom(data.snapshot.value);
+      print("lisener 02 ${res.toString()}");
+      for (var key in res.keys) {
+        // print("semana ${res[key]['SEMANA']}");
+        if (res[key]['SEMANA'] == semana.toString()) {
+          response.add(ClientDataModel.fromJson({...res[key], "id": key}));
+        }
+      }
+
+      // print("lisener 03 ${jsonEncode(response)}");
+      setState(() {
+        items = response;
+      });
+    });
   }
 }
