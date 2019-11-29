@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 BehaviorSubject<Map<String, dynamic>> infoLoginObserver =
@@ -54,4 +55,8 @@ class View {
       MaterialPageRoute(builder: (context) => page),
     );
   }
+}
+
+class Util {
+  static DateFormat get formatterFecha => new DateFormat('dd-MM-yyyy');
 }

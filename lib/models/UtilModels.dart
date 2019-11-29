@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
+import '../index.dart';
+
 class ClientDataModel {
   String cuidad;
   String descuento;
@@ -136,6 +140,78 @@ class ConfigDataModel {
   static String configDataModelToJson(ConfigDataModel data) {
     final dyn = data.toJson();
     return json.encode(dyn);
+  }
+}
+
+class Factura {
+  ClientDataModel cliente;
+  String codigo;
+  DateTime fecha;
+  List<LineaFactura> lineas = [];
+  double subTotal = 0.0;
+  double total = 0.0;
+  Factura({
+    @required this.cliente,
+    this.codigo,
+    this.fecha,
+  });
+
+  toJson() {
+    return {
+      "subTotal": subTotal,
+      "total": total,
+      "codigo": codigo,
+      "fecha": fechaString,
+      "cliente": cliente.toJson(),
+      "lineas": lineas.map<Map<String, dynamic>>((f) => f.toJson()).toList(),
+    };
+  }
+
+  get fechaString => Util.formatterFecha.format(fecha);
+
+  addLinea(LineaFactura ln) {
+    lineas.add(ln);
+    calcularTotales();
+  }
+
+  calcularTotales() {
+    double tLn = 0.0;
+    lineas.forEach((f) => tLn += f.total);
+    subTotal = tLn;
+    var descuento = double.tryParse(this.cliente.descuento) ?? 0.0;
+    total = subTotal - (subTotal * descuento);
+  }
+}
+
+class LineaFactura {
+  ProductDataModel producto;
+  int cantidad;
+  double total;
+  LineaFactura({
+    this.producto,
+    this.cantidad,
+    this.total = 0.0,
+  }) {
+    calcularTotal();
+  }
+  calcularTotal() {
+    total = (double.tryParse(producto.precio) ?? 0.0) * cantidad;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "producto": producto.toJson(),
+      "cantidad": cantidad,
+      "total": total,
+    };
+  }
+
+  LineaFactura fromJson(json) {
+    return LineaFactura(
+      cantidad: json['cantidad'],
+      total: json['total'],
+      producto: ProductDataModel.fromJson(json['producto']),
+    );
   }
 }
 

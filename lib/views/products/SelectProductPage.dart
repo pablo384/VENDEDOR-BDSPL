@@ -3,7 +3,11 @@ import 'package:vendedor/models/UtilModels.dart';
 import 'package:vendedor/services/DatabaseService.dart';
 
 class SelectProductPage extends StatefulWidget {
-  SelectProductPage({Key key}) : super(key: key);
+  final Function(LineaFactura) onSave;
+  SelectProductPage({
+    Key key,
+    this.onSave,
+  }) : super(key: key);
 
   @override
   _SelectProductPageState createState() => _SelectProductPageState();
@@ -139,6 +143,13 @@ class _SelectProductPageState extends State<SelectProductPage> {
                             RaisedButton(
                               onPressed: () {
                                 print(_cantidad.text);
+                                var linea = LineaFactura(
+                                  cantidad: int.tryParse(_cantidad.text) ?? 1,
+                                  producto: filteredProducts[index],
+                                );
+                                widget.onSave(linea);
+                                Navigator.of(context).pop();
+                                Navigator.of(ctx).pop();
                               },
                               child: Text("Aceptar"),
                             )

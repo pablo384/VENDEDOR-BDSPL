@@ -32,10 +32,12 @@ class DatabaseService {
   }
 
   static Future<int> getBillLenght() async {
-    DataSnapshot result = await database.reference().child("facturas").once();
+    var config = await StorageService.getConfig();
+    DataSnapshot result =
+        await database.reference().child("facturas/${config.ruta}").once();
     print("resultado::getBillLenght:: ${result.value}");
-    print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
-    return Map.castFrom(result.value).length;
+    // print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
+    return result.value != null ? Map.castFrom(result.value).length : 0;
   }
 
   static openDatabase() {
@@ -50,6 +52,19 @@ class DatabaseService {
         .reference()
         .runTransaction((MutableData mutableData) async {
       mutableData.value = config.toJson();
+      return mutableData;
+    });
+    return result.committed;
+  }
+
+  static saveBill(Factura factura) async {
+    var config = await StorageService.getConfig();
+    var result = await database
+        .reference()
+        .child("facturas/${config.ruta}/${factura.codigo}")
+        .reference()
+        .runTransaction((MutableData mutableData) async {
+      mutableData.value = factura.toJson();
       return mutableData;
     });
     return result.committed;
