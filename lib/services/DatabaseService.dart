@@ -35,7 +35,7 @@ class DatabaseService {
     var config = await StorageService.getConfig();
     DataSnapshot result =
         await database.reference().child("facturas/${config.ruta}").once();
-    print("resultado::getBillLenght:: ${result.value}");
+    // print("resultado::getBillLenght:: ${result.value}");
     // print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
     return result.value != null ? Map.castFrom(result.value).length : 0;
   }

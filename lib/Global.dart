@@ -57,6 +57,45 @@ class View {
   }
 }
 
+enum Answers { YES, NO, MAYBE }
+
 class Util {
   static DateFormat get formatterFecha => new DateFormat('dd-MM-yyyy');
+  static Future<bool> askUser(context,
+      {String msg = "¿Quiere proceder?"}) async {
+    var theme = Theme.of(context);
+    switch (await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Theme(
+            data: theme.copyWith(),
+            child: new SimpleDialog(
+              title: new Text(msg),
+              children: <Widget>[
+                new RaisedButton(
+                  child: new Text("Si"),
+                  onPressed: () {
+                    Navigator.pop(context, Answers.YES);
+                  },
+                ),
+                new RaisedButton(
+                  child: new Text("No"),
+                  onPressed: () {
+                    Navigator.pop(context, Answers.NO);
+                  },
+                ),
+              ],
+            ),
+          );
+        })) {
+      case Answers.YES:
+        // _setValue('Yes');
+        return true;
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
 }

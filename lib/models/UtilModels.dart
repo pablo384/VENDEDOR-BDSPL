@@ -148,23 +148,48 @@ class Factura {
   String codigo;
   DateTime fecha;
   List<LineaFactura> lineas = [];
+  double descuento = 0.0;
   double subTotal = 0.0;
   double total = 0.0;
   Factura({
     @required this.cliente,
     this.codigo,
     this.fecha,
+    this.total = 0.0,
+    this.subTotal = 0.0,
+    this.descuento = 0.0,
   });
 
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "subTotal": subTotal,
+      "descuento": descuento,
       "total": total,
       "codigo": codigo,
       "fecha": fechaString,
       "cliente": cliente.toJson(),
       "lineas": lineas.map<Map<String, dynamic>>((f) => f.toJson()).toList(),
     };
+  }
+
+  Factura fromJson(Map<String, dynamic> json) {
+    Factura fact = Factura(
+      cliente: ClientDataModel.fromJson(json['cliente']),
+      fecha: DateTime.parse(json['fecha']),
+      codigo: json['codigo'],
+      total: json['total'],
+      subTotal: json['subTotal'],
+      descuento: json['descuento'],
+    );
+
+    fact.addAll(
+      json['lineas']
+          .map<LineaFactura>(
+            (l) => LineaFactura.fromJson(l),
+          )
+          .toList(),
+    );
+    return fact;
   }
 
   get fechaString => Util.formatterFecha.format(fecha);
@@ -174,12 +199,23 @@ class Factura {
     calcularTotales();
   }
 
+  removeLinea(LineaFactura ln) {
+    lineas.remove(ln);
+    calcularTotales();
+  }
+
+  addAll(List<LineaFactura> ln) {
+    lineas.addAll(ln);
+    calcularTotales();
+  }
+
   calcularTotales() {
     double tLn = 0.0;
     lineas.forEach((f) => tLn += f.total);
     subTotal = tLn;
-    var descuento = double.tryParse(this.cliente.descuento) ?? 0.0;
-    total = subTotal - (subTotal * descuento);
+    var _descuento = double.tryParse(this.cliente.descuento) ?? 0.0;
+    descuento = (subTotal * _descuento);
+    total = subTotal - descuento;
   }
 }
 
@@ -206,7 +242,7 @@ class LineaFactura {
     };
   }
 
-  LineaFactura fromJson(json) {
+  static LineaFactura fromJson(json) {
     return LineaFactura(
       cantidad: json['cantidad'],
       total: json['total'],
