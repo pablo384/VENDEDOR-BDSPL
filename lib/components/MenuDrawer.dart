@@ -21,7 +21,18 @@ class _MenuDrawerState extends State<MenuDrawer> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Vendedor'),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.person_outline,
+                    size: 50.0,
+                  ),
+                  Text('Vendedor'),
+                ],
+              ),
+            ),
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -37,15 +48,15 @@ class _MenuDrawerState extends State<MenuDrawer> {
               View.goTo(context, OrdersPage());
             },
           ),
-          ListTile(
-            title: Text('Item 2'),
-            onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
+          // ListTile(
+          //   title: Text('Item 2'),
+          //   onTap: () {
+          //     // Update the state of the app
+          //     // ...
+          //     // Then close the drawer
+          //     Navigator.pop(context);
+          //   },
+          // ),
         ],
       ),
     );

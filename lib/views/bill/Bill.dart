@@ -63,7 +63,7 @@ class _BillState extends State<Bill> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Visita a "),
+        title: Text("Visita a Cliente"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

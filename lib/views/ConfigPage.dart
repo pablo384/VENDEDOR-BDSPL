@@ -87,6 +87,7 @@ class _ConfigPageState extends State<ConfigPage> {
                               if (await DatabaseService.saveConfig(config)) {
                                 await StorageService.saveConfig(config);
                                 print("todo OK");
+                                View.goBack(context);
                               } else {
                                 print("todo Mal");
                               }
