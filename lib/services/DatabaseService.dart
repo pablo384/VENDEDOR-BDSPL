@@ -4,6 +4,30 @@ import '../index.dart';
 
 class DatabaseService {
   static FirebaseDatabase database = FirebaseDatabase.instance;
+  static Future<int> getBillLenght() async {
+    var config = await StorageService.getConfig();
+    DataSnapshot result =
+        await database.reference().child("facturas/${config.ruta}").once();
+    // print("resultado::getBillLenght:: ${result.value}");
+    // print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
+    return result.value != null ? Map.castFrom(result.value).length : 0;
+  }
+
+  static Stream<Event> getClients() {
+    return database.reference().child("clientes").onValue;
+  }
+
+  static Future<List<Factura>> getOrdersOnce() async {
+    var config = await StorageService.getConfig();
+    var result =
+        await database.reference().child("facturas/${config.ruta}").once();
+    // print("resultado:getProductsOnce: ${result.value}");
+    // var pro = Map.castFrom(result.value);
+    var lsPro = Factura.fromMap(Map.castFrom(result.value));
+    // print("resultado:getProductsOnce: ${lsPro.toString()}");
+    return lsPro;
+  }
+
   static Stream<Event> getProducts() {
     return database.reference().child("productos").onValue;
   }
@@ -18,21 +42,6 @@ class DatabaseService {
     return lsPro;
   }
 
-  static Future<List<Factura>> getOrdersOnce() async {
-    var config = await StorageService.getConfig();
-    var result =
-        await database.reference().child("facturas/${config.ruta}").once();
-    // print("resultado:getProductsOnce: ${result.value}");
-    // var pro = Map.castFrom(result.value);
-    var lsPro = Factura.fromMap(Map.castFrom(result.value));
-    // print("resultado:getProductsOnce: ${lsPro.toString()}");
-    return lsPro;
-  }
-
-  static Stream<Event> getClients() {
-    return database.reference().child("clientes").onValue;
-  }
-
   static login(ConfigDataModel config, String passowrd) async {
     DataSnapshot result =
         await database.reference().child("rutas/${config.ruta}").once();
@@ -42,30 +51,9 @@ class DatabaseService {
     return indb.password == passowrd;
   }
 
-  static Future<int> getBillLenght() async {
-    var config = await StorageService.getConfig();
-    DataSnapshot result =
-        await database.reference().child("facturas/${config.ruta}").once();
-    // print("resultado::getBillLenght:: ${result.value}");
-    // print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
-    return result.value != null ? Map.castFrom(result.value).length : 0;
-  }
-
   static openDatabase() {
     database = FirebaseDatabase.instance;
     database.setPersistenceEnabled(true);
-  }
-
-  static saveConfig(ConfigDataModel config) async {
-    var result = await database
-        .reference()
-        .child("rutas/${config.ruta}")
-        .reference()
-        .runTransaction((MutableData mutableData) async {
-      mutableData.value = config.toJson();
-      return mutableData;
-    });
-    return result.committed;
   }
 
   static saveBill(Factura factura) async {
@@ -76,6 +64,18 @@ class DatabaseService {
         .reference()
         .runTransaction((MutableData mutableData) async {
       mutableData.value = factura.toJson();
+      return mutableData;
+    });
+    return result.committed;
+  }
+
+  static saveConfig(ConfigDataModel config) async {
+    var result = await database
+        .reference()
+        .child("rutas/${config.ruta}")
+        .reference()
+        .runTransaction((MutableData mutableData) async {
+      mutableData.value = config.toJson();
       return mutableData;
     });
     return result.committed;

@@ -15,50 +15,144 @@ class Bill extends StatefulWidget {
   _BillState createState() => _BillState();
 }
 
+class BodyBill extends StatelessWidget {
+  final Function(LineaFactura) removeLn;
+  final Factura factura;
+
+  const BodyBill({
+    Key key,
+    @required this.factura,
+    @required this.removeLn,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    "Descripcion",
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    "Cantidad",
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    "Precio",
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    "Total",
+                  ),
+                ),
+              ],
+            ),
+            Divider(),
+            ...factura.lineas.map(
+              (f) => ListTile(
+                onLongPress: () async {
+                  if (await Util.askUser(context,
+                      msg: "¿Seguro que quiere eliminar linea de la factura?"))
+                    removeLn(f);
+                },
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        "${f.producto.descCorta}",
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        "${f.cantidad}",
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        "${f.producto.precio}",
+                      ),
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        "${f.total.toStringAsFixed(2)}",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HeaderBill extends StatelessWidget {
+  final Factura factura;
+
+  const HeaderBill({
+    Key key,
+    @required this.factura,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Cliente:"),
+                Text(
+                  "${factura.cliente.clienteNombre}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Fecha:"),
+                Text("${factura.fechaString}"),
+              ],
+            ),
+            Text("Codigo: ${factura.codigo}"),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _BillState extends State<Bill> {
-  ClientDataModel get client => widget.client;
   String codigo = "";
   Factura factura;
-  @override
-  void initState() {
-    super.initState();
-    _getCodeFactura();
-  }
-
-  Future<void> _getCodeFactura() async {
-    var len = await DatabaseService.getBillLenght();
-    setState(() {
-      // codigo = "FV000$len";
-      factura = Factura(
-        cliente: client,
-        codigo: "FV000$len",
-        fecha: DateTime.now(),
-      );
-    });
-  }
-
-  _removeLinea(LineaFactura ln) {
-    factura.removeLinea(ln);
-    setState(() {});
-  }
-
-  _pressAddProduct() {
-    View.goTo(context, SelectProductPage(
-      onSave: (ln) {
-        factura.addLinea(ln);
-        setState(() {});
-      },
-    ));
-  }
-
-  _pressSave() async {
-    var res = await DatabaseService.saveBill(factura);
-    print("Factura resultado: $res");
-    if (res) {
-      View.goBack(context);
-    }
-  }
-
+  ClientDataModel get client => widget.client;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,138 +262,44 @@ class _BillState extends State<Bill> {
       ),
     );
   }
-}
-
-class BodyBill extends StatelessWidget {
-  final Function(LineaFactura) removeLn;
-  const BodyBill({
-    Key key,
-    @required this.factura,
-    @required this.removeLn,
-  }) : super(key: key);
-
-  final Factura factura;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: Text(
-                    "Descripcion",
-                  ),
-                ),
-                Flexible(
-                  child: Text(
-                    "Cantidad",
-                  ),
-                ),
-                Flexible(
-                  child: Text(
-                    "Precio",
-                  ),
-                ),
-                Flexible(
-                  flex: 2,
-                  child: Text(
-                    "Total",
-                  ),
-                ),
-              ],
-            ),
-            Divider(),
-            ...factura.lineas.map(
-              (f) => ListTile(
-                onLongPress: () async {
-                  if (await Util.askUser(context,
-                      msg: "¿Seguro que quiere eliminar linea de la factura?"))
-                    removeLn(f);
-                },
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Flexible(
-                      flex: 2,
-                      child: Text(
-                        "${f.producto.descCorta}",
-                      ),
-                    ),
-                    Flexible(
-                      child: Text(
-                        "${f.cantidad}",
-                      ),
-                    ),
-                    Flexible(
-                      child: Text(
-                        "${f.producto.precio}",
-                      ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: Text(
-                        "${f.total.toStringAsFixed(2)}",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    _getCodeFactura();
   }
-}
 
-class HeaderBill extends StatelessWidget {
-  const HeaderBill({
-    Key key,
-    @required this.factura,
-  }) : super(key: key);
+  Future<void> _getCodeFactura() async {
+    var len = await DatabaseService.getBillLenght();
+    setState(() {
+      // codigo = "FV000$len";
+      factura = Factura(
+        cliente: client,
+        codigo: "FV000$len",
+        fecha: DateTime.now(),
+      );
+    });
+  }
 
-  final Factura factura;
+  _pressAddProduct() {
+    View.goTo(context, SelectProductPage(
+      onSave: (ln) {
+        factura.addLinea(ln);
+        setState(() {});
+      },
+    ));
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("Cliente:"),
-                Text(
-                  "${factura.cliente.clienteNombre}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("Fecha:"),
-                Text("${factura.fechaString}"),
-              ],
-            ),
-            Text("Codigo: ${factura.codigo}"),
-          ],
-        ),
-      ),
-    );
+  _pressSave() async {
+    var res = await DatabaseService.saveBill(factura);
+    print("Factura resultado: $res");
+    if (res) {
+      View.goBack(context);
+    }
+  }
+
+  _removeLinea(LineaFactura ln) {
+    factura.removeLinea(ln);
+    setState(() {});
   }
 }

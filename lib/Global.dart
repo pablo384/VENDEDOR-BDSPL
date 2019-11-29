@@ -60,7 +60,8 @@ class View {
 enum Answers { YES, NO, MAYBE }
 
 class Util {
-  static DateFormat get formatterFecha => new DateFormat('dd-MM-yyyy');
+  static DateFormat get formatterFecha =>
+      new DateFormat('dd-MM-yyyy hh:mm:ss a');
   static Future<bool> askUser(context,
       {String msg = "¿Quiere proceder?"}) async {
     var theme = Theme.of(context);

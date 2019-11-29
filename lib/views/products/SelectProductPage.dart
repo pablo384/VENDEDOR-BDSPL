@@ -40,12 +40,6 @@ class _SelectProductPageState extends State<SelectProductPage> {
     });
   }
   @override
-  void initState() {
-    super.initState();
-    _getProducts();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildBar(context),
@@ -58,6 +52,12 @@ class _SelectProductPageState extends State<SelectProductPage> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _getProducts();
+  }
+
   Widget _buildBar(BuildContext context) {
     return new AppBar(
       centerTitle: true,
@@ -67,20 +67,6 @@ class _SelectProductPageState extends State<SelectProductPage> {
         onPressed: _searchPressed,
       ),
     );
-  }
-
-  void _getProducts() async {
-    // final response = await dio.get('https://swapi.co/api/people');
-    // List tempList = new List();
-    // for (int i = 0; i < response.data['results'].length; i++) {
-    //   tempList.add(response.data['results'][i]);
-    // }
-    var _prod = await DatabaseService.getProductsOnce();
-
-    setState(() {
-      products = _prod;
-      filteredProducts = products;
-    });
   }
 
   Widget _buildList() {
@@ -163,6 +149,20 @@ class _SelectProductPageState extends State<SelectProductPage> {
         );
       },
     );
+  }
+
+  void _getProducts() async {
+    // final response = await dio.get('https://swapi.co/api/people');
+    // List tempList = new List();
+    // for (int i = 0; i < response.data['results'].length; i++) {
+    //   tempList.add(response.data['results'][i]);
+    // }
+    var _prod = await DatabaseService.getProductsOnce();
+
+    setState(() {
+      products = _prod;
+      filteredProducts = products;
+    });
   }
 
   void _searchPressed() {
