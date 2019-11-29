@@ -19,9 +19,10 @@ class ConfigPage extends StatefulWidget {
 }
 
 class _ConfigPageState extends State<ConfigPage> {
-  final _rutaController = TextEditingController();
+  final _rutaController = TextEditingController(text: "RUTA A");
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  String _valRuta = 'RUTA A';
   // final database = FirebaseDatabase.instance;
   @override
   Widget build(BuildContext context) {
@@ -38,72 +39,92 @@ class _ConfigPageState extends State<ConfigPage> {
                 child: Column(
                   children: <Widget>[
                     Form(
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 6.0),
-                            child: TextFormField(
-                              key: Key('login_terminal'),
-                              keyboardType: TextInputType.emailAddress,
-                              // controller: consor,
-                              decoration: InputDecoration(
-                                labelText: 'Email',
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(FontAwesomeIcons.userCircle),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 6.0),
+                              child: TextFormField(
+                                key: Key('login_terminal'),
+                                keyboardType: TextInputType.emailAddress,
+                                // controller: consor,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(FontAwesomeIcons.userCircle),
+                                ),
+                                controller: _emailController,
                               ),
-                              controller: _emailController,
                             ),
-                          ),
-                          TextFormField(
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              labelText: 'Ruta',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(FontAwesomeIcons.route),
+
+                            DropdownButton(
+                              value: _valRuta,
+                              onChanged: (val) {
+                                setState(() {
+                                  _valRuta = val;
+                                });
+                              },
+                              items: ['RUTA A', 'RUTA B', 'RUTA C', 'RUTA D']
+                                  .map<DropdownMenuItem>(
+                                    (str) => DropdownMenuItem(
+                                      value: str,
+                                      child: Text(str),
+                                    ),
+                                  )
+                                  .toList(),
                             ),
-                            controller: _rutaController,
-                            obscureText: false,
-                          ),
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: 'Clave',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(FontAwesomeIcons.key),
+                            // TextFormField(
+                            //   keyboardType: TextInputType.text,
+                            //   decoration: InputDecoration(
+                            //     labelText: 'Ruta',
+                            //     border: OutlineInputBorder(),
+                            //     prefixIcon: Icon(FontAwesomeIcons.route),
+                            //   ),
+                            //   controller: _rutaController,
+                            //   obscureText: false,
+                            // ),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'Clave',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(FontAwesomeIcons.key),
+                              ),
+                              controller: _passwordController,
+                              obscureText: true,
                             ),
-                            controller: _passwordController,
-                            obscureText: true,
-                          ),
-                          RaisedButton(
-                            key: Key('login_login_btn'),
-                            onPressed: () async {
-                              var config = ConfigDataModel(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                ruta: _rutaController.text,
-                              );
-                              if (await DatabaseService.saveConfig(config)) {
-                                await StorageService.saveConfig(config);
-                                print("todo OK");
-                                View.goBack(context);
-                              } else {
-                                print("todo Mal");
-                              }
-                            },
-                            child: Text(
-                              'Guardar',
+                            RaisedButton(
+                              key: Key('login_login_btn'),
+                              onPressed: () async {
+                                var config = ConfigDataModel(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  ruta: _valRuta,
+                                );
+                                if (await DatabaseService.saveConfig(config)) {
+                                  await StorageService.saveConfig(config);
+                                  print("todo OK");
+                                  View.goBack(context);
+                                } else {
+                                  print("todo Mal");
+                                }
+                              },
+                              child: Text(
+                                'Guardar',
+                              ),
+                              color: Theme.of(context).primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
                             ),
-                            color: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          ),
-                          // Container(
-                          //   child: null,
-                          // ),
-                        ],
+                            // Container(
+                            //   child: null,
+                            // ),
+                          ],
+                        ),
                       ),
                     )
                   ],

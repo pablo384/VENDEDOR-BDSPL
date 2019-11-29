@@ -4,10 +4,15 @@ import '../index.dart';
 
 class DatabaseService {
   static FirebaseDatabase database = FirebaseDatabase.instance;
+  static Future<void> deleteOrder(String codigo) async {
+    var config = await StorageService.getConfig();
+    await database.reference().child("ordenes/${config.ruta}/$codigo").remove();
+  }
+
   static Future<int> getBillLenght() async {
     var config = await StorageService.getConfig();
     DataSnapshot result =
-        await database.reference().child("facturas/${config.ruta}").once();
+        await database.reference().child("ordenes/${config.ruta}").once();
     // print("resultado::getBillLenght:: ${result.value}");
     // print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
     return result.value != null ? Map.castFrom(result.value).length : 0;
@@ -17,12 +22,38 @@ class DatabaseService {
     return database.reference().child("clientes").onValue;
   }
 
+  static Future<List<ClientDataModel>> getClientsOnce() async {
+    var data = await database.reference().child("clientes").once();
+    var config = await StorageService.getConfig();
+    var semana = 0;
+    // var semana = 0;
+    // DateTime.now().
+    // var response = [];
+    if (DateTime.now().day > 0) semana = 1;
+    if (DateTime.now().day > 7) semana = 2;
+    if (DateTime.now().day > 14) semana = 1;
+    if (DateTime.now().day > 23) semana = 2;
+    List<ClientDataModel> response = [];
+    // semana = 1;
+    var res = Map.castFrom(data.value);
+    print("lisener 02  mi ruta: ${config.ruta}");
+    for (var key in res.keys) {
+      // print("semana ${res[key]['SEMANA']}");
+      if (res[key]['SEMANA'] == semana.toString() &&
+          config.ruta == res[key]['RUTA']) {
+        response.add(ClientDataModel.fromJson({...res[key], "id": key}));
+      }
+    }
+    return response;
+  }
+
   static Future<List<Factura>> getOrdersOnce() async {
     var config = await StorageService.getConfig();
     var result =
-        await database.reference().child("facturas/${config.ruta}").once();
+        await database.reference().child("ordenes/${config.ruta}").once();
     // print("resultado:getProductsOnce: ${result.value}");
     // var pro = Map.castFrom(result.value);
+    if (result.value == null) return [];
     var lsPro = Factura.fromMap(Map.castFrom(result.value));
     // print("resultado:getProductsOnce: ${lsPro.toString()}");
     return lsPro;
@@ -60,7 +91,7 @@ class DatabaseService {
     var config = await StorageService.getConfig();
     var result = await database
         .reference()
-        .child("facturas/${config.ruta}/${factura.codigo}")
+        .child("ordenes/${config.ruta}/${factura.codigo}")
         .reference()
         .runTransaction((MutableData mutableData) async {
       mutableData.value = factura.toJson();

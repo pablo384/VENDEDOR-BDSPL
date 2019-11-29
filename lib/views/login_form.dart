@@ -5,6 +5,7 @@ import 'package:vendedor/services/StorageService.dart';
 import 'package:vendedor/views/Home.dart';
 
 import '../Global.dart';
+import 'ConfigPage.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -105,12 +106,22 @@ class _LoginFormState extends State<LoginForm> {
     setState(() {
       _loading = true;
     });
-    var conf = await StorageService.getConfig();
-    var res = await DatabaseService.login(conf, _passwordController.text);
-    print("respuesta login $res");
-    if (res) {
-      StorageService.setLogged(true);
-      View.goToReplacement(context, Home());
+
+    if (_passwordController.text == "0222" &&
+        await StorageService.getConfig() == null) {
+      _passwordController.clear();
+      // await StorageService.getConfig();
+      View.goTo(context, ConfigPage());
+    } else if (_passwordController.text == "0222") {
+      SnackbarMsg.errorMsg("Ruta ya esta configurada en este dispositivo.");
+    } else {
+      var conf = await StorageService.getConfig();
+      var res = await DatabaseService.login(conf, _passwordController.text);
+      print("respuesta login $res");
+      if (res) {
+        StorageService.setLogged(true);
+        View.goToReplacement(context, Home());
+      }
     }
     setState(() {
       _loading = false;

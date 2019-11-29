@@ -116,9 +116,22 @@ class _OrdersPageState extends State<OrdersPage> {
                 ],
               ),
             ),
+            onLongPress: () async {
+              if (await Util.askUser(context,
+                  msg: "¿Seguro que quiere eliminar la orden?")) {
+                await DatabaseService.deleteOrder(
+                    filteredProducts[index].codigo);
+                products.remove(filteredProducts[index]);
+                // if (filteredProducts.length - 1 <= index)
+                //   filteredProducts.remove(filteredProducts[index]);
+                setState(() {});
+              }
+            },
             onTap: () async {
               print(filteredProducts[index].toJson());
-              var _cantidad = TextEditingController();
+              // filteredProducts.remove(filteredProducts[index]);
+
+              // var _cantidad = TextEditingController();
               //   await showDialog(
               //       context: context,
               //       barrierDismissible: true,

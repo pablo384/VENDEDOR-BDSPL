@@ -28,19 +28,13 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    GestureDetector(
-                      onLongPress: () {
-                        // _configBluetooth(context);
-                        View.goTo(context, ConfigPage());
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 20.0),
-                        child: Icon(
-                          Icons.security,
-                          size: 100.0,
-                          color: Colors.green,
-                        ), //Image.asset('assets/img/lotenetbl.png'),
-                      ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20.0),
+                      child: Icon(
+                        Icons.security,
+                        size: 100.0,
+                        color: Colors.green,
+                      ), //Image.asset('assets/img/lotenetbl.png'),
                     ),
                     LoginForm(),
                   ],

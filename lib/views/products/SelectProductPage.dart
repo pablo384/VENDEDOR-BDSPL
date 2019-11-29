@@ -76,7 +76,7 @@ class _SelectProductPageState extends State<SelectProductPage> {
         if (filteredProducts[i].descLarga.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ) ||
-            filteredProducts[i].descCorta.toLowerCase().contains(
+            filteredProducts[i].lineaProd.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 )) {
           tempList.add(filteredProducts[i]);
@@ -130,7 +130,8 @@ class _SelectProductPageState extends State<SelectProductPage> {
                               onPressed: () {
                                 print(_cantidad.text);
                                 var linea = LineaFactura(
-                                  cantidad: int.tryParse(_cantidad.text) ?? 1,
+                                  cantidad: double.tryParse(_cantidad.text) ??
+                                      int.tryParse(_cantidad.text).toDouble(),
                                   producto: filteredProducts[index],
                                 );
                                 widget.onSave(linea);

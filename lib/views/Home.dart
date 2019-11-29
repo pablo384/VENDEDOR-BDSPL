@@ -75,28 +75,34 @@ class _HomeState extends State<Home> {
     startListen();
   }
 
-  startListen() {
-    _subs = DatabaseService.getClients().listen((data) {
-      var semana = 0;
-      if (DateTime.now().day > 0) semana = 1;
-      if (DateTime.now().day > 7) semana = 2;
-      if (DateTime.now().day > 14) semana = 3;
-      if (DateTime.now().day > 23) semana = 4;
-      List<ClientDataModel> response = [];
-      // semana = 1;
-      var res = Map.castFrom(data.snapshot.value);
-      print("lisener 02 ${res.toString()}");
-      for (var key in res.keys) {
-        // print("semana ${res[key]['SEMANA']}");
-        if (res[key]['SEMANA'] == semana.toString()) {
-          response.add(ClientDataModel.fromJson({...res[key], "id": key}));
-        }
-      }
+  startListen() async {
+    var client = await DatabaseService.getClientsOnce();
 
-      // print("lisener 03 ${jsonEncode(response)}");
-      setState(() {
-        items = response;
-      });
+    // _subs = DatabaseService.getClients().listen((data) async {
+    //   var config = await StorageService.getConfig();
+    //   var semana = 0;
+    //   // var semana = 0;
+    //   // DateTime.now().
+    //   if (DateTime.now().day > 0) semana = 1;
+    //   if (DateTime.now().day > 7) semana = 2;
+    //   if (DateTime.now().day > 14) semana = 1;
+    //   if (DateTime.now().day > 23) semana = 2;
+    //   List<ClientDataModel> response = [];
+    //   // semana = 1;
+    //   var res = Map.castFrom(data.snapshot.value);
+    //   print("lisener 02 ${res.toString()} mi ruta: ${config.ruta}");
+    //   for (var key in res.keys) {
+    //     // print("semana ${res[key]['SEMANA']}");
+    //     if (res[key]['SEMANA'] == semana.toString() &&
+    //         config.ruta == res[key]['RUTA']) {
+    //       response.add(ClientDataModel.fromJson({...res[key], "id": key}));
+    //     }
+    //   }
+
+    //   // print("lisener 03 ${jsonEncode(response)}");
+    setState(() {
+      items = client;
     });
+    // });
   }
 }

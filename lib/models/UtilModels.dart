@@ -177,11 +177,12 @@ class Factura {
       cliente: ClientDataModel.fromJson(Map.castFrom(json['cliente'])),
       fecha: DateTime.parse(json['fecha']),
       codigo: json['codigo'],
-      total: json['total'],
-      subTotal: json['subTotal'],
+      total: json['total'] == null ? 0.0 : json['total'].toDouble(),
+      subTotal: json['subTotal'] == null ? 0.0 : json['subTotal'].toDouble(),
       descuento: json['descuento'] == null ? 0.0 : json['descuento'].toDouble(),
     );
 
+    if (json['lineas'] == null) json['lineas'] = [];
     fact.addAll(
       json['lineas']
           .map<LineaFactura>(
@@ -229,7 +230,7 @@ class Factura {
 
 class LineaFactura {
   ProductDataModel producto;
-  int cantidad;
+  double cantidad;
   double total;
   LineaFactura({
     this.producto,
@@ -252,7 +253,9 @@ class LineaFactura {
 
   static LineaFactura fromJson(json) {
     return LineaFactura(
-      cantidad: json['cantidad'],
+      cantidad: json['cantidad'] is int
+          ? json['cantidad'].toDouble()
+          : json['cantidad'],
       total: json['total'].toDouble(),
       producto: ProductDataModel.fromJson(Map.castFrom(json['producto'])),
     );

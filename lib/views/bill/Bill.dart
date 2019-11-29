@@ -66,7 +66,7 @@ class BodyBill extends StatelessWidget {
               (f) => ListTile(
                 onLongPress: () async {
                   if (await Util.askUser(context,
-                      msg: "¿Seguro que quiere eliminar linea de la factura?"))
+                      msg: "¿Seguro que quiere eliminar linea de la orden?"))
                     removeLn(f);
                 },
                 title: Row(
@@ -126,10 +126,12 @@ class HeaderBill extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text("Cliente:"),
-                Text(
-                  "${factura.cliente.clienteNombre}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                Flexible(
+                  child: Text(
+                    "${factura.cliente.clienteNombre}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -241,7 +243,7 @@ class _BillState extends State<Bill> {
                         children: <Widget>[
                           Icon(Icons.save),
                           Text(
-                            " Facturar",
+                            " Finalizar Pedido",
                           ),
                         ],
                       ),
@@ -252,7 +254,7 @@ class _BillState extends State<Bill> {
         ),
       ),
       floatingActionButton: Tooltip(
-        message: "Agregar producto a factura",
+        message: "Agregar producto a Orden",
         child: FloatingActionButton(
           onPressed: _pressAddProduct,
           child: Icon(
@@ -275,7 +277,7 @@ class _BillState extends State<Bill> {
       // codigo = "FV000$len";
       factura = Factura(
         cliente: client,
-        codigo: "FV000$len",
+        codigo: "000$len",
         fecha: DateTime.now(),
       );
     });

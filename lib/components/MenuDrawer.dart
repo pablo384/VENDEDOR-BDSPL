@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vendedor/index.dart';
+import 'package:vendedor/views/Login.dart';
 import 'package:vendedor/views/pedidos/OrdersPage.dart';
 
 class MenuDrawer extends StatefulWidget {
@@ -46,6 +47,19 @@ class _MenuDrawerState extends State<MenuDrawer> {
               // Navigator.pop(context);
               // OrdersPage(context)
               View.goTo(context, OrdersPage());
+            },
+          ),
+          ListTile(
+            title: Text('Salir'),
+            onTap: () async {
+              StorageService.setLogged(false);
+              View.goToReplacement(context, LoginPage());
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              // Navigator.pop(context);
+              // OrdersPage(context)
+              // View.goTo(context, OrdersPage());
             },
           ),
           // ListTile(

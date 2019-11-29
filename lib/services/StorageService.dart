@@ -14,6 +14,7 @@ class StorageService {
   static Future<ConfigDataModel> getConfig() async {
     var pref = await SharedPreferences.getInstance();
     var data = pref.getString(keyConfig);
+    if (data == null) return null;
     return ConfigDataModel.configDataModelFromJson(data);
   }
 
