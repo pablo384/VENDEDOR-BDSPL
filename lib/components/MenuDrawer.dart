@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vendedor/index.dart';
+import 'package:vendedor/views/pedidos/OrdersPage.dart';
 
 class MenuDrawer extends StatefulWidget {
   MenuDrawer({Key key}) : super(key: key);
@@ -19,18 +21,20 @@ class _MenuDrawerState extends State<MenuDrawer> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Drawer Header'),
+            child: Text('Vendedor'),
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
           ),
           ListTile(
-            title: Text('Item 1'),
+            title: Text('Ordenes'),
             onTap: () {
               // Update the state of the app
               // ...
               // Then close the drawer
-              Navigator.pop(context);
+              // Navigator.pop(context);
+              // OrdersPage(context)
+              View.goTo(context, OrdersPage());
             },
           ),
           ListTile(

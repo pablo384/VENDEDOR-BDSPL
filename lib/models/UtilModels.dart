@@ -166,30 +166,38 @@ class Factura {
       "descuento": descuento,
       "total": total,
       "codigo": codigo,
-      "fecha": fechaString,
+      "fecha": fecha.toIso8601String(),
       "cliente": cliente.toJson(),
       "lineas": lineas.map<Map<String, dynamic>>((f) => f.toJson()).toList(),
     };
   }
 
-  Factura fromJson(Map<String, dynamic> json) {
+  static Factura fromJson(Map<String, dynamic> json) {
     Factura fact = Factura(
-      cliente: ClientDataModel.fromJson(json['cliente']),
+      cliente: ClientDataModel.fromJson(Map.castFrom(json['cliente'])),
       fecha: DateTime.parse(json['fecha']),
       codigo: json['codigo'],
       total: json['total'],
       subTotal: json['subTotal'],
-      descuento: json['descuento'],
+      descuento: json['descuento'] == null ? 0.0 : json['descuento'].toDouble(),
     );
 
     fact.addAll(
       json['lineas']
           .map<LineaFactura>(
-            (l) => LineaFactura.fromJson(l),
+            (l) => LineaFactura.fromJson(Map.castFrom(l)),
           )
           .toList(),
     );
     return fact;
+  }
+
+  static List<Factura> fromMap(Map str) {
+    List<Factura> res = [];
+    for (var k in str.keys) {
+      res.add(Factura.fromJson({...str[k]}));
+    }
+    return res;
   }
 
   get fechaString => Util.formatterFecha.format(fecha);
@@ -245,8 +253,8 @@ class LineaFactura {
   static LineaFactura fromJson(json) {
     return LineaFactura(
       cantidad: json['cantidad'],
-      total: json['total'],
-      producto: ProductDataModel.fromJson(json['producto']),
+      total: json['total'].toDouble(),
+      producto: ProductDataModel.fromJson(Map.castFrom(json['producto'])),
     );
   }
 }

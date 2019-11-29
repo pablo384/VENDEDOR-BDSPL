@@ -18,6 +18,17 @@ class DatabaseService {
     return lsPro;
   }
 
+  static Future<List<Factura>> getOrdersOnce() async {
+    var config = await StorageService.getConfig();
+    var result =
+        await database.reference().child("facturas/${config.ruta}").once();
+    // print("resultado:getProductsOnce: ${result.value}");
+    // var pro = Map.castFrom(result.value);
+    var lsPro = Factura.fromMap(Map.castFrom(result.value));
+    // print("resultado:getProductsOnce: ${lsPro.toString()}");
+    return lsPro;
+  }
+
   static Stream<Event> getClients() {
     return database.reference().child("clientes").onValue;
   }
