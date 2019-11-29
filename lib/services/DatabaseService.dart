@@ -8,7 +8,17 @@ class DatabaseService {
     return database.reference().child("productos").onValue;
   }
 
-  static Stream<Event> getTodayRouteVisit() {
+  static Future<List<ProductDataModel>> getProductsOnce() async {
+    var result = await database.reference().child("productos").once();
+    // print("resultado:getProductsOnce: ${result.value}");
+    // var pro = Map.castFrom(result.value);
+    var lsPro =
+        ProductDataModel.productDataModelsFromMap(Map.castFrom(result.value));
+    // print("resultado:getProductsOnce: ${lsPro.toString()}");
+    return lsPro;
+  }
+
+  static Stream<Event> getClients() {
     return database.reference().child("clientes").onValue;
   }
 
@@ -19,6 +29,13 @@ class DatabaseService {
 
     var indb = ConfigDataModel.fromJson(Map.castFrom(result.value));
     return indb.password == passowrd;
+  }
+
+  static Future<int> getBillLenght() async {
+    DataSnapshot result = await database.reference().child("facturas").once();
+    print("resultado::getBillLenght:: ${result.value}");
+    print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
+    return Map.castFrom(result.value).length;
   }
 
   static openDatabase() {

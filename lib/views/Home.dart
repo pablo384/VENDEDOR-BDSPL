@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:vendedor/services/DatabaseService.dart';
+import 'package:vendedor/views/products/SelectProductPage.dart';
 
 import '../index.dart';
+import 'bill/Bill.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -29,7 +31,14 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               ...items.map(
                 (val) => FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // DatabaseService.getProductsOnce();
+                    View.goTo(
+                        context,
+                        Bill(
+                          client: val,
+                        ));
+                  },
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.person),
@@ -67,7 +76,7 @@ class _HomeState extends State<Home> {
   }
 
   startListen() {
-    _subs = DatabaseService.getTodayRouteVisit().listen((data) {
+    _subs = DatabaseService.getClients().listen((data) {
       var semana = 0;
       if (DateTime.now().day > 0) semana = 1;
       if (DateTime.now().day > 7) semana = 2;
