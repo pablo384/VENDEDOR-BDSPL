@@ -25,21 +25,26 @@ class DatabaseService {
   static Future<List<ClientDataModel>> getClientsOnce() async {
     var data = await database.reference().child("clientes").once();
     var config = await StorageService.getConfig();
-    var semana = 0;
+    var dayWeek = await StorageService.getWeekAndDay();
+    var nDay = Util.getWLetterFromStr(dayWeek[1]);
+    var week = dayWeek[0].contains("1") || dayWeek[0].contains("3") ? 1 : 2;
+    print("DIA Y SEMANA:: $nDay  $week");
     // var semana = 0;
-    // DateTime.now().
-    // var response = [];
-    if (DateTime.now().day > 0) semana = 1;
-    if (DateTime.now().day > 7) semana = 2;
-    if (DateTime.now().day > 14) semana = 1;
-    if (DateTime.now().day > 23) semana = 2;
+    // // var semana = 0;
+    // // DateTime.now().
+    // // var response = [];
+    // if (DateTime.now().day > 0) semana = 1;
+    // if (DateTime.now().day > 7) semana = 2;
+    // if (DateTime.now().day > 14) semana = 1;
+    // if (DateTime.now().day > 23) semana = 2;
     List<ClientDataModel> response = [];
     // semana = 1;
     var res = Map.castFrom(data.value);
     print("lisener 02  mi ruta: ${config.ruta}");
     for (var key in res.keys) {
       // print("semana ${res[key]['SEMANA']}");
-      if (res[key]['SEMANA'] == semana.toString() &&
+      if (res[key]['SEMANA'] == week.toString() &&
+          res[key]['DIA'] == nDay &&
           config.ruta == res[key]['RUTA']) {
         var cl = ClientDataModel.fromJson({...res[key], "id": key});
         cl.visited = await StorageService.getVisitedClient(cl.id);
@@ -47,6 +52,9 @@ class DatabaseService {
         response.add(cl);
       }
     }
+    // int.tryParse()
+    response
+        .sort((a, b) => int.tryParse(a.orden).compareTo(int.tryParse(b.orden)));
     return response;
   }
 

@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
                         ),
                       Flexible(
                         child: Text(
-                          " ${val.clienteNombre} ",
+                          " ${val.id} | ${val.clienteNombre} ",
                         ),
                       ),
                     ],

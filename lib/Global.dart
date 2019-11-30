@@ -62,6 +62,61 @@ enum Answers { YES, NO, MAYBE }
 class Util {
   static DateFormat get formatterFecha =>
       new DateFormat('dd-MM-yyyy hh:mm:ss a');
+  static DateFormat get formatterDia => new DateFormat('EEE');
+
+  static String getWeekDayFromNumber(int n) {
+    switch (n) {
+      case 2:
+        return "Lunes";
+        break;
+      case 3:
+        return "Martes";
+        break;
+      case 4:
+        return "Miercoles";
+        break;
+      case 5:
+        return "Jueves";
+        break;
+      case 6:
+        return "Viernes";
+        break;
+      default:
+        return "Lunes";
+    }
+  }
+
+  static String getWLetterFromStr(String n) {
+    switch (n) {
+      case "Lunes":
+        return "L";
+        break;
+      case "Martes":
+        return "M";
+        break;
+      case "Miercoles":
+        return "W";
+        break;
+      case "Jueves":
+        return "J";
+        break;
+      case "Viernes":
+        return "V";
+        break;
+      default:
+        return "L";
+    }
+  }
+
+  static getNumerOfWeek() {
+    var semana = 0;
+    if (DateTime.now().day > 0) semana = 1;
+    if (DateTime.now().day > 7) semana = 2;
+    if (DateTime.now().day > 14) semana = 1;
+    if (DateTime.now().day > 23) semana = 2;
+    return semana;
+  }
+
   static Future<bool> askUser(context,
       {String msg = "¿Quiere proceder?"}) async {
     var theme = Theme.of(context);

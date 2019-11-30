@@ -95,7 +95,8 @@ class _SelectProductPageState extends State<SelectProductPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(filteredProducts[index].descLarga),
+                  Text("${filteredProducts[index].id}"),
+                  Text("${filteredProducts[index].descLarga}"),
                   Text("Existencia:" + filteredProducts[index].ultExist),
                   Text("Precio:" + filteredProducts[index].precio),
                 ],

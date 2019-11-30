@@ -35,7 +35,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           ListTile(

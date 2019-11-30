@@ -51,6 +51,22 @@ class StorageService {
     return data;
   }
 
+  static Future<void> setWeekAndDay(
+    String day,
+    String week,
+  ) async {
+    var pref = await SharedPreferences.getInstance();
+    await pref.setString("s-week", day);
+    await pref.setString("s-day", week);
+  }
+
+  static Future<List<String>> getWeekAndDay() async {
+    var pref = await SharedPreferences.getInstance();
+    var wek = pref.getString("s-week");
+    var day = pref.getString("s-day");
+    return [day, wek];
+  }
+
   static Future<bool> getNotSellslient(
     String code,
   ) async {

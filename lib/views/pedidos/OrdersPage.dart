@@ -18,7 +18,7 @@ class _OrdersPageState extends State<OrdersPage> {
   List<Factura> filteredProducts =
       new List<Factura>(); // names filtered by search text
   Icon _searchIcon = new Icon(Icons.search);
-  Widget _appBarTitle = new Text('Search Example');
+  Widget _appBarTitle = new Text('Ordenes');
 
   _OrdersPageState() {
     _filter.addListener(() {
@@ -197,7 +197,7 @@ class _OrdersPageState extends State<OrdersPage> {
       } else {
         this._searchIcon = new Icon(Icons.search);
         this._appBarTitle = new Text(
-          'Busca tu producto',
+          'Ordenes',
         );
         filteredProducts = products;
         _filter.clear();

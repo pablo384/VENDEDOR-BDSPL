@@ -20,15 +20,32 @@ class _LoginFormState extends State<LoginForm> {
   dynamic _fechaManual = false;
   dynamic _semana;
   dynamic _dia;
+  String ruta = "";
 
   @override
   void initState() {
     super.initState();
     _authVerification();
+    setValsInit();
   }
 
   Future _authVerification() async {
-    if (await StorageService.isLogged()) View.goToReplacement(context, Home());
+    var conf = await StorageService.getConfig();
+    setState(() {
+      ruta = conf.ruta;
+    });
+    // if (await StorageService.isLogged()) View.goToReplacement(context, Home());
+  }
+
+  setValsInit() {
+    var fech = DateTime.now();
+    var weeg = Util.getNumerOfWeek();
+    // print(
+    //     "DIAA ACTUAL:${Util.getWeekDayFromNumber(fech.weekday)}:${Util.formatterDia.format(fech)}");
+    setState(() {
+      _dia = Util.getWeekDayFromNumber(fech.weekday);
+      _semana = "Semana $weeg";
+    });
   }
 
   @override
@@ -54,6 +71,7 @@ class _LoginFormState extends State<LoginForm> {
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text("RUTA: $ruta"),
           // Container(
           //   margin: EdgeInsets.only(bottom: 6.0),
           //   child: TextFormField(
@@ -86,10 +104,10 @@ class _LoginFormState extends State<LoginForm> {
           Row(
             children: <Widget>[
               Checkbox(
-                value: _fechaManual,
+                value: !_fechaManual,
                 onChanged: (ar) {
                   setState(() {
-                    _fechaManual = ar;
+                    _fechaManual = !ar;
                   });
                 },
               ),
@@ -177,6 +195,8 @@ class _LoginFormState extends State<LoginForm> {
     setState(() {
       _loading = true;
     });
+
+    await StorageService.setWeekAndDay(_dia, _semana);
 
     if (_passwordController.text == "0222" &&
         await StorageService.getConfig() == null) {
