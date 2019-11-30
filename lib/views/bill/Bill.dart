@@ -155,9 +155,24 @@ class _BillState extends State<Bill> {
   String codigo = "";
   Factura factura;
   ClientDataModel get client => widget.client;
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    if (snackMsgObserver.value != null) {
+      _onWidgetDidBuild(() {
+        _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: Text(
+              snackMsgObserver.value.msg,
+            ),
+            backgroundColor: snackMsgObserver.value.color,
+          ),
+        );
+        snackMsgObserver.add(null);
+      });
+    }
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Visita a Cliente"),
       ),
@@ -237,6 +252,7 @@ class _BillState extends State<Bill> {
                       ),
                     ),
                     RaisedButton(
+                      color: Colors.green,
                       onPressed: _pressSave,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -244,6 +260,19 @@ class _BillState extends State<Bill> {
                           Icon(Icons.save),
                           Text(
                             " Finalizar Pedido",
+                          ),
+                        ],
+                      ),
+                    ),
+                    RaisedButton(
+                      color: Colors.red,
+                      onPressed: _pressNotSells,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.view_list),
+                          Text(
+                            " No venta",
                           ),
                         ],
                       ),
@@ -292,16 +321,48 @@ class _BillState extends State<Bill> {
     ));
   }
 
+  _pressNotSells() async {
+    // if (factura.lineas.length > 0) {
+    //   var res = await DatabaseService.saveBill(factura);
+    //   print("Factura resultado: $res");
+    //   if (res) {
+    factura.cliente.noVenta = true;
+    await StorageService.setVisitedClient(
+      factura.cliente.id,
+    );
+    View.goBack(context);
+    // }
+    // } else {
+    //   SnackbarMsg.errorMsg("Debes agregar almenos un producto a la orden.");
+    //   setState(() {});
+    // }
+  }
+
   _pressSave() async {
-    var res = await DatabaseService.saveBill(factura);
-    print("Factura resultado: $res");
-    if (res) {
-      View.goBack(context);
+    if (factura.lineas.length > 0) {
+      var res = await DatabaseService.saveBill(factura);
+      print("Factura resultado: $res");
+      if (res) {
+        factura.cliente.visited = true;
+        await StorageService.setVisitedClient(
+          factura.cliente.id,
+        );
+        View.goBack(context);
+      }
+    } else {
+      SnackbarMsg.errorMsg("Debes agregar almenos un producto a la orden.");
+      setState(() {});
     }
   }
 
   _removeLinea(LineaFactura ln) {
     factura.removeLinea(ln);
     setState(() {});
+  }
+
+  void _onWidgetDidBuild(Function callback) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callback();
+    });
   }
 }

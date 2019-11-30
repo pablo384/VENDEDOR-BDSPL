@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:vendedor/services/DatabaseService.dart';
 import 'package:vendedor/views/products/SelectProductPage.dart';
@@ -42,9 +43,23 @@ class _HomeState extends State<Home> {
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.person),
+                      if (val.visited)
+                        Chip(
+                          backgroundColor: Colors.deepPurple,
+                          padding: EdgeInsets.all(0),
+                          label: Text('Venta',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      if (val.noVenta && !val.visited)
+                        Chip(
+                          backgroundColor: Colors.deepOrange,
+                          padding: EdgeInsets.all(0),
+                          label: Text('No Venta',
+                              style: TextStyle(color: Colors.white)),
+                        ),
                       Flexible(
                         child: Text(
-                          " ${val.clienteNombre}",
+                          " ${val.clienteNombre} ",
                         ),
                       ),
                     ],

@@ -25,6 +25,8 @@ class ClientDataModel {
   String dia;
   String sector;
   String id;
+  bool visited = false;
+  bool noVenta = false;
 
   ClientDataModel({
     this.cuidad,
@@ -150,11 +152,13 @@ class Factura {
   List<LineaFactura> lineas = [];
   double descuento = 0.0;
   double subTotal = 0.0;
+  double itbis = 0.0;
   double total = 0.0;
   Factura({
     @required this.cliente,
     this.codigo,
     this.fecha,
+    this.itbis = 0.0,
     this.total = 0.0,
     this.subTotal = 0.0,
     this.descuento = 0.0,
@@ -162,6 +166,7 @@ class Factura {
 
   Map<String, dynamic> toJson() {
     return {
+      "ITBIS": itbis,
       "subTotal": subTotal,
       "descuento": descuento,
       "total": total,
@@ -178,6 +183,7 @@ class Factura {
       fecha: DateTime.parse(json['fecha']),
       codigo: json['codigo'],
       total: json['total'] == null ? 0.0 : json['total'].toDouble(),
+      itbis: json['ITBIS'] == null ? 0.0 : json['ITBIS'].toDouble(),
       subTotal: json['subTotal'] == null ? 0.0 : json['subTotal'].toDouble(),
       descuento: json['descuento'] == null ? 0.0 : json['descuento'].toDouble(),
     );

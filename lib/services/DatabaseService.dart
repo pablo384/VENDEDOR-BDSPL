@@ -41,7 +41,10 @@ class DatabaseService {
       // print("semana ${res[key]['SEMANA']}");
       if (res[key]['SEMANA'] == semana.toString() &&
           config.ruta == res[key]['RUTA']) {
-        response.add(ClientDataModel.fromJson({...res[key], "id": key}));
+        var cl = ClientDataModel.fromJson({...res[key], "id": key});
+        cl.visited = await StorageService.getVisitedClient(cl.id);
+        cl.noVenta = await StorageService.getNotSellslient(cl.id);
+        response.add(cl);
       }
     }
     return response;

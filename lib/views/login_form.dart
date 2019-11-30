@@ -116,11 +116,18 @@ class _LoginFormState extends State<LoginForm> {
       SnackbarMsg.errorMsg("Ruta ya esta configurada en este dispositivo.");
     } else {
       var conf = await StorageService.getConfig();
-      var res = await DatabaseService.login(conf, _passwordController.text);
-      print("respuesta login $res");
-      if (res) {
-        StorageService.setLogged(true);
-        View.goToReplacement(context, Home());
+      if (conf == null) {
+        SnackbarMsg.errorMsg("Configure su ruta primero.");
+      } else {
+        var res = await DatabaseService.login(conf, _passwordController.text);
+        print("respuesta login $res");
+
+        if (res) {
+          StorageService.setLogged(true);
+          View.goToReplacement(context, Home());
+        } else {
+          SnackbarMsg.errorMsg("Clave incorrecta.");
+        }
       }
     }
     setState(() {

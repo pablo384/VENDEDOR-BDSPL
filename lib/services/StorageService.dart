@@ -24,6 +24,42 @@ class StorageService {
     return data;
   }
 
+  static Future<bool> setVisitedClient(
+    String code, {
+    bool val = true,
+  }) async {
+    var pref = await SharedPreferences.getInstance();
+    var data = await pref.setBool(code, val);
+    return data;
+  }
+
+  static Future<bool> getVisitedClient(
+    String code,
+  ) async {
+    var pref = await SharedPreferences.getInstance();
+    var data = pref.getBool(code);
+    if (data == null) return false;
+    return data;
+  }
+
+  static Future<bool> setNotSellslient(
+    String code, {
+    bool val = true,
+  }) async {
+    var pref = await SharedPreferences.getInstance();
+    var data = await pref.setBool("s-$code", val);
+    return data;
+  }
+
+  static Future<bool> getNotSellslient(
+    String code,
+  ) async {
+    var pref = await SharedPreferences.getInstance();
+    var data = pref.getBool("s-$code");
+    if (data == null) return false;
+    return data;
+  }
+
   static Future<bool> isLogged() async {
     var pref = await SharedPreferences.getInstance();
     var data = pref.getBool(keySession);
