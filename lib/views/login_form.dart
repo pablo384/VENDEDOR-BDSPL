@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:vendedor/services/DatabaseService.dart';
 import 'package:vendedor/services/StorageService.dart';
 import 'package:vendedor/views/Home.dart';
@@ -16,6 +17,9 @@ class _LoginFormState extends State<LoginForm> {
   // final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _loading = false;
+  dynamic _fechaManual = false;
+  dynamic _semana;
+  dynamic _dia;
 
   @override
   void initState() {
@@ -76,6 +80,73 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: true,
             enabled: !_loading,
           ),
+          Divider(),
+          Text(Util.formatterFecha.format(DateTime.now())),
+
+          Row(
+            children: <Widget>[
+              Checkbox(
+                value: _fechaManual,
+                onChanged: (ar) {
+                  setState(() {
+                    _fechaManual = ar;
+                  });
+                },
+              ),
+              Text("Seleccion automatica")
+            ],
+          ),
+
+          if (_fechaManual)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Semana: "),
+                DropdownButton(
+                  value: _semana,
+                  items: ["Semana 1", "Semana 2", "Semana 3", "Semana 4"]
+                      .map<DropdownMenuItem>((f) {
+                    // print("valor drop: ${f['val']}");
+                    return DropdownMenuItem(
+                      value: f,
+                      child: Text(f.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (s) {
+                    // print("cambio valor drop: ${s}");
+                    setState(() {
+                      _semana = s;
+                    });
+                  },
+                ),
+              ],
+            ),
+
+          if (_fechaManual)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Dia: "),
+                DropdownButton(
+                  value: _dia,
+                  items: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
+                      .map<DropdownMenuItem>((f) {
+                    // print("valor drop: ${f['val']}");
+                    return DropdownMenuItem(
+                      value: f,
+                      child: Text(f.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (s) {
+                    // print("cambio valor drop: ${s}");
+                    setState(() {
+                      _dia = s;
+                    });
+                  },
+                ),
+              ],
+            ),
+
           _loading
               ? CircularProgressIndicator(
                   // backgroundColor: Theme.of(context).primaryColor,

@@ -334,7 +334,7 @@ class _BillState extends State<Bill> {
           var division = ln.cantidad / 25 * 3;
           var nln = LineaFactura.fromJson(ln.toJson());
           nln.total = 0.0;
-          nln.cantidad = division.toDouble();
+          nln.cantidad = division.toDouble().roundToDouble();
           factura.addLinea(nln);
         } else if (client.of101 == "1" &&
             ln.cantidad >= 10 &&
