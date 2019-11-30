@@ -215,7 +215,13 @@ class Factura {
   }
 
   removeLinea(LineaFactura ln) {
-    lineas.remove(ln);
+    lineas.removeWhere((test) {
+      var equal = ln == test;
+      var second = ln.producto.id == test.producto.id && test.total == 0.0;
+      print("condiciones $equal || $second");
+      return equal || second;
+    });
+    // lineas.remove(ln);
     calcularTotales();
   }
 

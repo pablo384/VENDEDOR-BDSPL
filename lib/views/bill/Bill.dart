@@ -128,7 +128,7 @@ class HeaderBill extends StatelessWidget {
                 Text("Cliente:"),
                 Flexible(
                   child: Text(
-                    "${factura.cliente.clienteNombre}",
+                    "${factura.cliente.clienteNombre} | ${factura.cliente.id}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -328,6 +328,25 @@ class _BillState extends State<Bill> {
     View.goTo(context, SelectProductPage(
       onSave: (ln) {
         factura.addLinea(ln);
+        if (client.of253 == "1" && ln.cantidad >= 25) {
+          var division = ln.cantidad / 25 * 3;
+          var nln = LineaFactura.fromJson(ln.toJson());
+          nln.total = 0.0;
+          nln.cantidad = division.toDouble();
+          factura.addLinea(nln);
+        } else if (client.of101 == "1" && ln.cantidad >= 10) {
+          var division = ln.cantidad ~/ 10;
+          var nln = LineaFactura.fromJson(ln.toJson());
+          nln.total = 0.0;
+          nln.cantidad = division.toDouble();
+          factura.addLinea(nln);
+        } else if (client.of5M == "1" && ln.cantidad >= 5) {
+          var division = ln.cantidad ~/ 5;
+          var nln = LineaFactura.fromJson(ln.toJson());
+          nln.total = 0.0;
+          nln.cantidad = division.toDouble() * .5;
+          factura.addLinea(nln);
+        }
         setState(() {});
       },
     ));
