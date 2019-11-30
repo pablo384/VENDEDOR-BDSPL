@@ -230,7 +230,8 @@ class Factura {
     subTotal = tLn;
     var _descuento = double.tryParse(this.cliente.descuento) ?? 0.0;
     descuento = (subTotal * _descuento);
-    total = subTotal - descuento;
+    itbis = 0.18 * subTotal;
+    total = subTotal - descuento + itbis;
   }
 }
 

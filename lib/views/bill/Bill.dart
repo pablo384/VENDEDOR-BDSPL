@@ -225,6 +225,18 @@ class _BillState extends State<Bill> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
+                                Text("ITBIS:"),
+                                Text(
+                                  "${factura.itbis.toStringAsFixed(2)}",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
                                 Text("Descuento:"),
                                 Text(
                                   "${factura.descuento.toStringAsFixed(2)}",
