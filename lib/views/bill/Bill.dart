@@ -328,19 +328,25 @@ class _BillState extends State<Bill> {
     View.goTo(context, SelectProductPage(
       onSave: (ln) {
         factura.addLinea(ln);
-        if (client.of253 == "1" && ln.cantidad >= 25) {
+        if (client.of253 == "1" &&
+            ln.cantidad >= 25 &&
+            ln.producto.of253 == "1") {
           var division = ln.cantidad / 25 * 3;
           var nln = LineaFactura.fromJson(ln.toJson());
           nln.total = 0.0;
           nln.cantidad = division.toDouble();
           factura.addLinea(nln);
-        } else if (client.of101 == "1" && ln.cantidad >= 10) {
+        } else if (client.of101 == "1" &&
+            ln.cantidad >= 10 &&
+            ln.producto.of101 == "1") {
           var division = ln.cantidad ~/ 10;
           var nln = LineaFactura.fromJson(ln.toJson());
           nln.total = 0.0;
           nln.cantidad = division.toDouble();
           factura.addLinea(nln);
-        } else if (client.of5M == "1" && ln.cantidad >= 5) {
+        } else if (client.of5M == "1" &&
+            ln.cantidad >= 5 &&
+            ln.producto.of5M == "1") {
           var division = ln.cantidad ~/ 5;
           var nln = LineaFactura.fromJson(ln.toJson());
           nln.total = 0.0;

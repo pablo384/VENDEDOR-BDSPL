@@ -81,12 +81,12 @@ class ClientDataModel {
         "rnc": rnc,
         "calle": calle,
         "OF_10_1": of101,
+        "OF_25_3": of253,
+        "OF_5_M": of5M,
         "tipo_clientes": tipoClientes,
         "SEMANA": semana,
         "provincia": provincia,
         "condicion": condicion,
-        "OF_25_3": of253,
-        "OF_5_M": of5M,
         "BALANCE": balance,
         "cliente_nombre": clienteNombre,
         "ORDEN": orden,
@@ -286,6 +286,9 @@ class ProductDataModel {
   String tipoProd;
   String ultExist;
   String viscocidad;
+  String of101;
+  String of253;
+  String of5M;
 
   ProductDataModel({
     this.id,
@@ -298,6 +301,9 @@ class ProductDataModel {
     this.tipoProd,
     this.ultExist,
     this.viscocidad,
+    this.of101 = "1",
+    this.of253 = "1",
+    this.of5M = "1",
   });
 
   factory ProductDataModel.fromJson(Map<String, dynamic> json) =>
@@ -312,6 +318,9 @@ class ProductDataModel {
         tipoProd: json["TIPO_PROD"],
         ultExist: json["ULT_EXIST"],
         viscocidad: json["VISCOCIDAD"],
+        of101: json["OF_10_1"].toString() ?? "1",
+        of253: json["OF_25_3"].toString() ?? "1",
+        of5M: json["OF_5_M"].toString() ?? "1",
       );
 
   Map<String, dynamic> toJson() => {
@@ -325,6 +334,9 @@ class ProductDataModel {
         "TIPO_PROD": tipoProd,
         "ULT_EXIST": ultExist,
         "VISCOCIDAD": viscocidad,
+        "OF_10_1": of101,
+        "OF_25_3": of253,
+        "OF_5_M": of5M,
       };
   static List<ProductDataModel> productDataModelFromJson(String str) {
     final jsonData = json.decode(str);
