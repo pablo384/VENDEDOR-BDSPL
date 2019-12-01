@@ -14,31 +14,43 @@ class SelectProductPage extends StatefulWidget {
 }
 
 class _SelectProductPageState extends State<SelectProductPage> {
-// controls the text label we use as a search bar
+  /// Controlador de el input ade busqueda
   final TextEditingController _filter = new TextEditingController();
-  // final dio = new Dio(); // for http requests
+  // Variable que almacena el texto a buscar
   String _searchText = "";
-  List<ProductDataModel> products =
-      new List<ProductDataModel>(); // names we get from API
-  List<ProductDataModel> filteredProducts =
-      new List<ProductDataModel>(); // names filtered by search text
-  Icon _searchIcon = new Icon(Icons.search);
-  Widget _appBarTitle = new Text('Search Example');
 
+  /// Variable que almacena todos los productos
+  List<ProductDataModel> products = new List<ProductDataModel>();
+
+  /// Se almacena Lista de productos filtrados con el criterio de busqueda
+  List<ProductDataModel> filteredProducts = new List<ProductDataModel>();
+
+  /// Icono de busqueda
+  Icon _searchIcon = new Icon(Icons.search);
+  // Titulo de pantalla
+  Widget _appBarTitle = new Text('Buscar producto');
+
+  /// Constructor de clase
   _SelectProductPageState() {
+    /// A la escucha de los cambios en el texto a buscar
     _filter.addListener(() {
+      /// Si el texto a buscar esta vacio
+      /// asigna todos los productos a lista de productos filtrados
       if (_filter.text.isEmpty) {
         setState(() {
           _searchText = "";
           filteredProducts = products;
         });
       } else {
+        /// Si el temrino a buscar no esta vacio se almacena en [_searchText]
         setState(() {
           _searchText = _filter.text;
         });
       }
     });
   }
+
+  /// Build del widget que se encarga de construir la interfaz completa
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +70,10 @@ class _SelectProductPageState extends State<SelectProductPage> {
     _getProducts();
   }
 
+  /// Este metodo se encarga de construir la parte superior de la pantalla
+  /// y ademas controlar su interaccion con el usuarios.
+  /// Si se hace click en el icono buscar se elimina este y muestra
+  /// el icono de X y el input para bsucar productos.
   Widget _buildBar(BuildContext context) {
     return new AppBar(
       centerTitle: true,
@@ -69,6 +85,8 @@ class _SelectProductPageState extends State<SelectProductPage> {
     );
   }
 
+  /// Este se encarga de construir la lista de productos que estaran a lo lasrgo de la
+  /// pantalla. ademas de filtrar si hay un termino de busqueda valido.
   Widget _buildList() {
     if (_searchText.isNotEmpty) {
       List<ProductDataModel> tempList = new List<ProductDataModel>();
@@ -84,6 +102,9 @@ class _SelectProductPageState extends State<SelectProductPage> {
       }
       filteredProducts = tempList;
     }
+
+    /// ListView que construye cada elemento dentro de la lista de productos
+    /// En la interfaz grafica.
     return ListView.builder(
       itemCount: products == null ? 0 : filteredProducts.length,
       itemBuilder: (BuildContext context, int index) {
@@ -153,20 +174,17 @@ class _SelectProductPageState extends State<SelectProductPage> {
     );
   }
 
+  /// Metodo encargado de obtener los productos desde la base de datos.
   void _getProducts() async {
-    // final response = await dio.get('https://swapi.co/api/people');
-    // List tempList = new List();
-    // for (int i = 0; i < response.data['results'].length; i++) {
-    //   tempList.add(response.data['results'][i]);
-    // }
     var _prod = await DatabaseService.getProductsOnce();
-
     setState(() {
       products = _prod;
       filteredProducts = products;
     });
   }
 
+  /// Metodo que se ejecuta cuendo el boton de busqueda es presionado.
+  /// Este cambia la interfaz mostrando el input para escribir el criterio a buscar.
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {

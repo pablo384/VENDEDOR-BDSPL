@@ -32,7 +32,7 @@ class _CierrePageState extends State<CierrePage> {
         clients.where((test) => !test.noVenta && !test.visited).toList().length;
     var totlaVisitado =
         clients.where((test) => test.noVenta || test.visited).toList().length;
-    var abstencionVentas = totlaVenta - totalClientes;
+    var abstencionVentas = (totlaVenta - totalClientes).abs();
     var totalEnVentas = 0.0;
     var totalUnidadesEnVentas = 0.0;
     var fStr = Util.formatterFechaSinHoras.format(fecha);
@@ -72,13 +72,13 @@ class _CierrePageState extends State<CierrePage> {
               children: <Widget>[
                 Text("Total Clientes: $_totalClientes"),
                 Text(
-                    "Efectividad de visitas: (${(_totalEnVisitas * 100) / _totalClientes}%) $_totalEnVisitas/$_totalClientes"),
+                    "Efectividad de visitas: (${((_totalEnVisitas * 100) / _totalClientes).toStringAsFixed(2)}%) $_totalEnVisitas/$_totalClientes"),
                 Text(
-                    "Efectividad en ventas: (${(_totalClientesVenta * 100) / _totalEnVisitas}%) $_totalClientesVenta/$_totalEnVisitas"),
+                    "Efectividad en ventas: (${((_totalClientesVenta * 100) / _totalEnVisitas).toStringAsFixed(2)}%) $_totalClientesVenta/$_totalEnVisitas"),
                 Text(
-                    "Abstencion de ventas: (${(_abstencionVentas * 100) / _totalClientes}%) $_abstencionVentas/$_totalClientes"),
+                    "Abstencion de ventas: (${((_abstencionVentas * 100) / _totalClientes).toStringAsFixed(2)}%) $_abstencionVentas/$_totalClientes"),
                 Text(
-                    "Efectividad general de ventas: (${(_totalClientesVenta * 100) / _totalClientes}%) $_totalClientesVenta/$_totalClientes"),
+                    "Efectividad general de ventas: (${((_totalClientesVenta * 100) / _totalClientes).toStringAsFixed(2)}%) $_totalClientesVenta/$_totalClientes"),
                 Text("Total en ventas: ${_totalEnVentas.toStringAsFixed(2)}"),
                 Text(
                     "Total en cajas: ${_totalUnidadesEnVentas.toStringAsFixed(2)}"),
