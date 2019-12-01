@@ -67,7 +67,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
             ),
             onTap: () async {
               await DatabaseService.saveBill(null);
-              View.goTo(context, CierrePage());
+              View.goBack(context);
+              // View.goTo(context, CierrePage());
             },
           ),
         ],

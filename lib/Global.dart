@@ -65,6 +65,11 @@ class Util {
       new DateFormat('dd-MM-yyyy hh:mm:ss a');
   static DateFormat get formatterDia => new DateFormat('EEE');
 
+  static formatNumber(String str) {
+    return str.replaceAllMapped(
+        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+  }
+
   static String getWeekDayFromNumber(int n) {
     switch (n) {
       case 2:

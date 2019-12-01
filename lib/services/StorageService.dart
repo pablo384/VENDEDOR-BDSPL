@@ -44,6 +44,13 @@ class StorageService {
     return jsonDecode(data);
   }
 
+  static Future<dynamic> clearCacheFactura() async {
+    var pref = await SharedPreferences.getInstance();
+    await pref.setString(keyCache, null);
+    // if (data == null) return null;
+    // return jsonDecode(data);
+  }
+
   static Future<bool> setVisitedClient(
     String code, {
     bool val = true,

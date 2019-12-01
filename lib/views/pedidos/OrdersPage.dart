@@ -61,36 +61,51 @@ class _OrdersPageState extends State<OrdersPage> {
         icon: _searchIcon,
         onPressed: _searchPressed,
       ),
+      actions: <Widget>[
+        IconButton(
+          onPressed: _todayButtonPressed,
+          icon: Icon(Icons.today),
+        )
+      ],
     );
   }
 
   void _getProducts() async {
-    // final response = await dio.get('https://swapi.co/api/people');
-    // List tempList = new List();
-    // for (int i = 0; i < response.data['results'].length; i++) {
-    //   tempList.add(response.data['results'][i]);
-    // }
     var _prod = await DatabaseService.getOrdersOnce();
-
     setState(() {
       products = _prod;
       filteredProducts = products;
     });
   }
 
+  void _todayButtonPressed() {
+    List<Factura> tempList = new List<Factura>();
+    for (int i = 0; i < products.length; i++) {
+      if (products[i].fecha.day == DateTime.now().day) {
+        if (!tempList.contains(products[i])) tempList.add(products[i]);
+      }
+    }
+
+    setState(() {
+      // filteredProducts.clear();
+      filteredProducts = tempList;
+    });
+  }
+
   Widget _buildList() {
     if (_searchText.isNotEmpty) {
       List<Factura> tempList = new List<Factura>();
-      for (int i = 0; i < filteredProducts.length; i++) {
-        if (filteredProducts[i].codigo.toLowerCase().contains(
+      for (int i = 0; i < products.length; i++) {
+        if (products[i].codigo.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 ) ||
-            filteredProducts[i].cliente.clienteNombre.toLowerCase().contains(
+            products[i].cliente.clienteNombre.toLowerCase().contains(
                   _searchText.toLowerCase(),
                 )) {
-          tempList.add(filteredProducts[i]);
+          tempList.add(products[i]);
         }
       }
+      // filteredProducts.clear();
       filteredProducts = tempList;
     }
     return ListView.builder(
@@ -128,50 +143,7 @@ class _OrdersPageState extends State<OrdersPage> {
               }
             },
             onTap: () async {
-              print(filteredProducts[index].toJson());
-              // filteredProducts.remove(filteredProducts[index]);
-
-              // var _cantidad = TextEditingController();
-              //   await showDialog(
-              //       context: context,
-              //       barrierDismissible: true,
-              //       builder: (ctx) {
-              //         return SimpleDialog(
-              //           contentPadding: const EdgeInsets.all(8.0),
-              //           children: <Widget>[
-              //             Column(
-              //               children: <Widget>[
-              //                 Text("Cantidad"),
-              //                 new TextField(
-              //                   autofocus: true,
-              //                   controller: _cantidad,
-              //                   keyboardType: TextInputType.number,
-              //                   decoration: new InputDecoration(
-              //                     prefixIcon: new Icon(Icons.plus_one),
-              //                     labelText: "Cantidad",
-              //                   ),
-              //                   onSubmitted: (arg) {
-              //                     print(arg);
-              //                   },
-              //                 ),
-              //                 RaisedButton(
-              //                   onPressed: () {
-              //                     // print(_cantidad.text);
-              //                     // var linea = LineaFactura(
-              //                     //   cantidad: int.tryParse(_cantidad.text) ?? 1,
-              //                     //   producto: filteredProducts[index],
-              //                     // );
-              //                     // widget.onSave(linea);
-              //                     // Navigator.of(context).pop();
-              //                     // Navigator.of(ctx).pop();
-              //                   },
-              //                   child: Text("Aceptar"),
-              //                 )
-              //               ],
-              //             )
-              //           ],
-              //         );
-              //       });
+              print("index item::$index  ${filteredProducts[index].codigo}");
             },
           ),
         );

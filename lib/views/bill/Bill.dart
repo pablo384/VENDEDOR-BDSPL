@@ -85,13 +85,13 @@ class BodyBill extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        "${f.producto.precio}",
+                        "${Util.formatNumber(f.producto.precio.toString())}",
                       ),
                     ),
                     Flexible(
                       flex: 2,
                       child: Text(
-                        "${f.total.toStringAsFixed(2)}",
+                        "${Util.formatNumber(f.total.toStringAsFixed(2))}",
                       ),
                     ),
                   ],
@@ -218,7 +218,7 @@ class _BillState extends State<Bill> {
                               children: <Widget>[
                                 Text("Subtotal:"),
                                 Text(
-                                  "${factura.subTotal.toStringAsFixed(2)}",
+                                  "${Util.formatNumber(factura.subTotal.toStringAsFixed(2))}",
                                   style: TextStyle(
                                     color: Colors.red,
                                   ),
@@ -230,7 +230,7 @@ class _BillState extends State<Bill> {
                               children: <Widget>[
                                 Text("ITBIS:"),
                                 Text(
-                                  "${factura.itbis.toStringAsFixed(2)}",
+                                  "${Util.formatNumber(factura.itbis.toStringAsFixed(2))}",
                                   style: TextStyle(
                                     color: Colors.red,
                                   ),
@@ -242,7 +242,7 @@ class _BillState extends State<Bill> {
                               children: <Widget>[
                                 Text("Descuento:"),
                                 Text(
-                                  "${factura.descuento.toStringAsFixed(2)}",
+                                  "${Util.formatNumber(factura.descuento.toStringAsFixed(2))}",
                                   style: TextStyle(
                                     color: Colors.red,
                                   ),
@@ -254,7 +254,7 @@ class _BillState extends State<Bill> {
                               children: <Widget>[
                                 Text("Total:"),
                                 Text(
-                                  "${factura.total.toStringAsFixed(2)}",
+                                  "${Util.formatNumber(factura.total.toStringAsFixed(2))}",
                                   style: TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold,

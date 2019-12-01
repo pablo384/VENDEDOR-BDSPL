@@ -79,9 +79,10 @@ class _CierrePageState extends State<CierrePage> {
                     "Abstencion de ventas: (${((_abstencionVentas * 100) / _totalClientes).toStringAsFixed(2)}%) $_abstencionVentas/$_totalClientes"),
                 Text(
                     "Efectividad general de ventas: (${((_totalClientesVenta * 100) / _totalClientes).toStringAsFixed(2)}%) $_totalClientesVenta/$_totalClientes"),
-                Text("Total en ventas: ${_totalEnVentas.toStringAsFixed(2)}"),
                 Text(
-                    "Total en cajas: ${_totalUnidadesEnVentas.toStringAsFixed(2)}"),
+                    "Total en ventas: ${Util.formatNumber(_totalEnVentas.toStringAsFixed(2))}"),
+                Text(
+                    "Total en cajas: ${Util.formatNumber(_totalUnidadesEnVentas.toStringAsFixed(2))}"),
                 RaisedButton(
                   onPressed: () {},
                   child: Text("Cerrar Dia"),

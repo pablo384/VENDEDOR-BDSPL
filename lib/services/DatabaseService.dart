@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../index.dart';
 
 class DatabaseService {
@@ -10,12 +11,23 @@ class DatabaseService {
   }
 
   static Future<int> getBillLenght() async {
+    var keycoUNT = "bill-count";
     var config = await StorageService.getConfig();
-    DataSnapshot result =
-        await database.reference().child("ordenes/${config.ruta}").once();
+    var pref = await SharedPreferences.getInstance();
+    var data = pref.getInt(keycoUNT);
+    if (data == null) {
+      DataSnapshot result =
+          await database.reference().child("ordenes/${config.ruta}").once();
+      var count = result.value != null ? Map.castFrom(result.value).length : 0;
+      await pref.setInt(keycoUNT, count);
+      return count;
+    } else {
+      await pref.setInt(keycoUNT, data + 1);
+      return data + 1;
+    }
     // print("resultado::getBillLenght:: ${result.value}");
     // print("resultado::getBillLenght:: ${Map.castFrom(result.value).length}");
-    return result.value != null ? Map.castFrom(result.value).length : 0;
+    // return result.value != null ? Map.castFrom(result.value).length : 0;
   }
 
   static Stream<Event> getClients() {
@@ -104,17 +116,19 @@ class DatabaseService {
     try {
       await http.get("https://google.com");
       var cache = await StorageService.getCacheFactura();
-      if (cache != null)
+      if (cache != null) {
         for (var item in cache) {
           await database
               .reference()
               .child("ordenes/${config.ruta}/${item['codigo']}")
               .reference()
               .runTransaction((MutableData mutableData) async {
-            mutableData.value = factura.toJson();
+            mutableData.value = item;
             return mutableData;
           });
         }
+        await StorageService.clearCacheFactura();
+      }
       if (factura != null) {
         var result = await database
             .reference()
