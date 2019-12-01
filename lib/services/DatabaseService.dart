@@ -1,5 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
-
+import 'package:http/http.dart' as http;
 import '../index.dart';
 
 class DatabaseService {
@@ -101,15 +101,37 @@ class DatabaseService {
 
   static saveBill(Factura factura) async {
     var config = await StorageService.getConfig();
-    var result = await database
-        .reference()
-        .child("ordenes/${config.ruta}/${factura.codigo}")
-        .reference()
-        .runTransaction((MutableData mutableData) async {
-      mutableData.value = factura.toJson();
-      return mutableData;
-    });
-    return result.committed;
+    try {
+      await http.get("https://google.com");
+      var cache = await StorageService.getCacheFactura();
+      if (cache != null)
+        for (var item in cache) {
+          await database
+              .reference()
+              .child("ordenes/${config.ruta}/${item['codigo']}")
+              .reference()
+              .runTransaction((MutableData mutableData) async {
+            mutableData.value = factura.toJson();
+            return mutableData;
+          });
+        }
+      if (factura != null) {
+        var result = await database
+            .reference()
+            .child("ordenes/${config.ruta}/${factura.codigo}")
+            .reference()
+            .runTransaction((MutableData mutableData) async {
+          mutableData.value = factura.toJson();
+          return mutableData;
+        });
+        return result.committed;
+      }
+      return true;
+    } catch (e) {
+      await StorageService.addToCache(factura.toJson());
+      print("NO INTERNET");
+      return true;
+    }
   }
 
   static saveConfig(ConfigDataModel config) async {

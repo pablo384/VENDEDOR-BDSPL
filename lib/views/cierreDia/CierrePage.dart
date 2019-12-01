@@ -84,8 +84,14 @@ class _CierrePageState extends State<CierrePage> {
                     "Total en cajas: ${_totalUnidadesEnVentas.toStringAsFixed(2)}"),
                 RaisedButton(
                   onPressed: () {},
-                  child: Text("Enviar reporte"),
-                )
+                  child: Text("Cerrar Dia"),
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    View.goBack(context);
+                  },
+                  child: Text("Cancelar"),
+                ),
               ],
             ),
           ),

@@ -58,6 +58,18 @@ class _MenuDrawerState extends State<MenuDrawer> {
               View.goToReplacement(context, LoginPage());
             },
           ),
+          ListTile(
+            title: Row(
+              children: <Widget>[
+                Icon(Icons.data_usage),
+                Text(" Enviar datos"),
+              ],
+            ),
+            onTap: () async {
+              await DatabaseService.saveBill(null);
+              View.goTo(context, CierrePage());
+            },
+          ),
         ],
       ),
     );
