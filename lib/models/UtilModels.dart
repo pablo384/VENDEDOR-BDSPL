@@ -51,6 +51,11 @@ class ClientDataModel {
     this.id,
   });
 
+  updateData() async {
+    noVenta = await StorageService.getNotSellslient(id);
+    visited = await StorageService.getVisitedClient(id);
+  }
+
   factory ClientDataModel.fromJson(Map<String, dynamic> json) =>
       new ClientDataModel(
         cuidad: json["cuidad"],

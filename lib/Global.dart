@@ -60,6 +60,7 @@ class View {
 enum Answers { YES, NO, MAYBE }
 
 class Util {
+  static DateFormat get formatterFechaSinHoras => new DateFormat('dd-MM-yyyy');
   static DateFormat get formatterFecha =>
       new DateFormat('dd-MM-yyyy hh:mm:ss a');
   static DateFormat get formatterDia => new DateFormat('EEE');

@@ -173,7 +173,7 @@ class _LoginFormState extends State<LoginForm> {
                   key: Key('login_login_btn'),
                   onPressed: _loading ? null : _loginProcess,
                   child: Text(
-                    'Iniciar Sesión',
+                    'Iniciar Día',
                   ),
                   color: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(

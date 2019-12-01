@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vendedor/index.dart';
 import 'package:vendedor/views/Login.dart';
+import 'package:vendedor/views/cierreDia/CierrePage.dart';
 import 'package:vendedor/views/pedidos/OrdersPage.dart';
 
 class MenuDrawer extends StatefulWidget {
@@ -41,12 +42,13 @@ class _MenuDrawerState extends State<MenuDrawer> {
           ListTile(
             title: Text('Ordenes'),
             onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              // Navigator.pop(context);
-              // OrdersPage(context)
               View.goTo(context, OrdersPage());
+            },
+          ),
+          ListTile(
+            title: Text('Cierre del dia'),
+            onTap: () {
+              View.goTo(context, CierrePage());
             },
           ),
           ListTile(
@@ -54,23 +56,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
             onTap: () async {
               StorageService.setLogged(false);
               View.goToReplacement(context, LoginPage());
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              // Navigator.pop(context);
-              // OrdersPage(context)
-              // View.goTo(context, OrdersPage());
             },
           ),
-          // ListTile(
-          //   title: Text('Item 2'),
-          //   onTap: () {
-          //     // Update the state of the app
-          //     // ...
-          //     // Then close the drawer
-          //     Navigator.pop(context);
-          //   },
-          // ),
         ],
       ),
     );

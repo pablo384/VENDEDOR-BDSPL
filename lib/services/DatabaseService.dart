@@ -47,8 +47,9 @@ class DatabaseService {
           res[key]['DIA'] == nDay &&
           config.ruta == res[key]['RUTA']) {
         var cl = ClientDataModel.fromJson({...res[key], "id": key});
-        cl.visited = await StorageService.getVisitedClient(cl.id);
-        cl.noVenta = await StorageService.getNotSellslient(cl.id);
+        await cl.updateData();
+        // cl.visited = await StorageService.getVisitedClient(cl.id);
+        // cl.noVenta = await StorageService.getNotSellslient(cl.id);
         response.add(cl);
       }
     }
