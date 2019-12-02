@@ -3,6 +3,7 @@ import 'package:vendedor/index.dart';
 import 'package:vendedor/views/Login.dart';
 import 'package:vendedor/views/cierreDia/CierrePage.dart';
 import 'package:vendedor/views/pedidos/OrdersPage.dart';
+import 'package:vendedor/views/products/ProductsPage.dart';
 
 class MenuDrawer extends StatefulWidget {
   MenuDrawer({Key key}) : super(key: key);
@@ -43,6 +44,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
             title: Text('Ordenes'),
             onTap: () {
               View.goTo(context, OrdersPage());
+            },
+          ),
+          ListTile(
+            title: Text('Productos'),
+            onTap: () {
+              View.goTo(context, ProductsPage());
             },
           ),
           ListTile(
