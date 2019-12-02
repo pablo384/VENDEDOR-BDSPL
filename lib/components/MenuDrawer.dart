@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vendedor/index.dart';
 import 'package:vendedor/views/Login.dart';
 import 'package:vendedor/views/cierreDia/CierrePage.dart';
+import 'package:vendedor/views/clientes/ClientsPage.dart';
 import 'package:vendedor/views/pedidos/OrdersPage.dart';
 import 'package:vendedor/views/products/ProductsPage.dart';
 
@@ -50,6 +51,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
             title: Text('Productos'),
             onTap: () {
               View.goTo(context, ProductsPage());
+            },
+          ),
+          ListTile(
+            title: Text('Clientes'),
+            onTap: () {
+              View.goTo(context, ClientsPage());
             },
           ),
           ListTile(
