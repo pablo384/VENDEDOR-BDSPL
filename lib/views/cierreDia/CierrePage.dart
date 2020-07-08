@@ -58,6 +58,26 @@ class _CierrePageState extends State<CierrePage> {
     });
   }
 
+  Future<void> _sendCuadre() async {
+    Map<String, String> obj = {};
+    obj['Total Clientes'] = "$_totalClientes";
+    obj['Efectividad de visitas'] =
+        "(${((_totalEnVisitas * 100) / _totalClientes).toStringAsFixed(2)}%) $_totalEnVisitas/$_totalClientes";
+    obj['Efectividad en ventas'] =
+        "(${((_totalClientesVenta * 100) / _totalEnVisitas).toStringAsFixed(2)}%) $_totalClientesVenta/$_totalEnVisitas";
+    obj['Abstencion de ventas'] =
+        "(${((_abstencionVentas * 100) / _totalClientes).toStringAsFixed(2)}%) $_abstencionVentas/$_totalClientes";
+    obj['Efectividad general de ventas'] =
+        "(${((_totalClientesVenta * 100) / _totalClientes).toStringAsFixed(2)}%) $_totalClientesVenta/$_totalClientes";
+    obj['Total en ventas'] =
+        "${Util.formatNumber(_totalEnVentas.toStringAsFixed(2))}";
+    obj['Total en cajas'] =
+        "${Util.formatNumber(_totalUnidadesEnVentas.toStringAsFixed(2))}";
+    ConfigDataModel conf = await StorageService.getConfig();
+    obj['Email Supervisor'] = conf.email;
+    await StorageService.sendCierre(obj);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +104,10 @@ class _CierrePageState extends State<CierrePage> {
                 Text(
                     "Total en cajas: ${Util.formatNumber(_totalUnidadesEnVentas.toStringAsFixed(2))}"),
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _sendCuadre();
+                    Navigator.of(context).pop();
+                  },
                   child: Text("Cerrar Dia"),
                 ),
                 RaisedButton(

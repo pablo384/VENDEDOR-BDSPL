@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../index.dart';
@@ -108,5 +108,18 @@ class StorageService {
     var data = pref.getBool(keySession);
     if (data == null) return false;
     return data;
+  }
+
+  static Future<bool> sendCierre(Map<String, String> datos) async {
+    try {
+      var re = await http.post("https://mailtesis.herokuapp.com/",
+          body: json.encode(datos),
+          headers: {'Content-Type': 'application/json'});
+      print(re.body);
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 }
