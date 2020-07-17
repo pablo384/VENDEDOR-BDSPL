@@ -88,6 +88,9 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     startListen();
+    _subs = reloadObserver.listen((event) {
+      startListen();
+    });
   }
 
   startListen() async {

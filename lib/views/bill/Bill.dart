@@ -387,6 +387,7 @@ class _BillState extends State<Bill> {
         await StorageService.setVisitedClient(
           factura.cliente.id,
         );
+        reloadObserver.add(true);
         View.goBack(context);
       }
     } else {

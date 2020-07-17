@@ -6,6 +6,7 @@ BehaviorSubject<Map<String, dynamic>> infoLoginObserver =
     new BehaviorSubject<Map<String, dynamic>>();
 BehaviorSubject<SnackbarMsg> snackMsgObserver =
     new BehaviorSubject<SnackbarMsg>();
+BehaviorSubject<bool> reloadObserver = new BehaviorSubject<bool>();
 
 class SnackbarMsg {
   String msg;
