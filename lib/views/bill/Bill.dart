@@ -367,9 +367,10 @@ class _BillState extends State<Bill> {
     //   print("Factura resultado: $res");
     //   if (res) {
     factura.cliente.noVenta = true;
-    await StorageService.setVisitedClient(
+    await StorageService.setNotSellslient(
       factura.cliente.id,
     );
+    reloadObserver.add(true);
     View.goBack(context);
     // }
     // } else {
