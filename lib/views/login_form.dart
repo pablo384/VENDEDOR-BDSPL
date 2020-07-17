@@ -31,9 +31,11 @@ class _LoginFormState extends State<LoginForm> {
 
   Future _authVerification() async {
     var conf = await StorageService.getConfig();
-    setState(() {
-      ruta = conf.ruta;
-    });
+
+    if (conf != null)
+      setState(() {
+        ruta = conf.ruta;
+      });
     // if (await StorageService.isLogged()) View.goToReplacement(context, Home());
   }
 

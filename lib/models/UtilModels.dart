@@ -49,6 +49,7 @@ class ClientDataModel {
     this.dia,
     this.sector,
     this.id,
+    this.visited,
   });
 
   updateData() async {
@@ -78,6 +79,7 @@ class ClientDataModel {
         dia: json["DIA"],
         sector: json["sector"],
         id: json["id"],
+        visited: json["visited"],
       );
 
   Map<String, dynamic> toJson() => {
