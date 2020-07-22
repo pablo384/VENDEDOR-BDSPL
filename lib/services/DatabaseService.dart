@@ -92,15 +92,13 @@ class DatabaseService {
     print("lisener 02  mi ruta: ${config.ruta}");
     for (var key in res.keys) {
       // print("semana ${res[key]['SEMANA']}");
-      // if (res[key]['SEMANA'] == week.toString() &&
-      //     res[key]['DIA'] == nDay &&
-      //     config.ruta == res[key]['RUTA']) {
-      var cl = ClientDataModel.fromJson({...res[key], "id": key});
-      await cl.updateData();
-      // cl.visited = await StorageService.getVisitedClient(cl.id);
-      // cl.noVenta = await StorageService.getNotSellslient(cl.id);
-      response.add(cl);
-      // }
+      if (config.ruta == res[key]['RUTA']) {
+        var cl = ClientDataModel.fromJson({...res[key], "id": key});
+        await cl.updateData();
+        // cl.visited = await StorageService.getVisitedClient(cl.id);
+        // cl.noVenta = await StorageService.getNotSellslient(cl.id);
+        response.add(cl);
+      }
     }
     // int.tryParse()
     response
